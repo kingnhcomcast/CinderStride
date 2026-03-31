@@ -8,34 +8,34 @@
         "${mod_author}"
     ],
     "contact": {
-        "homepage": "https://github.com/kingnhcomcast/examplemod",
-        "sources": "https://github.com/kingnhcomcast/examplemod"
+        "homepage": "https://github.com/kingnhcomcast/cinderstride",
+        "sources": "https://github.com/kingnhcomcast/cinderstride"
     },
     "license": "${license}",
-    "icon": "assets/examplemod/icon.png",
+    "icon": "assets/cinderstride/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "io.drahlek.examplemod.ExampleMod"
+            "io.drahlek.cinderstride.CinderStride"
         ],
         "client": [
-            "io.drahlek.examplemod.ExamplemodClient"
+            "io.drahlek.cinderstride.CinderStrideClient"
         ]
     },
     "mixins": [
         {
-            "config": "examplemod.common.client.mixins.json",
+            "config": "cinderstride.common.client.mixins.json",
             "environment": "client"
         },
         {
-            "config": "examplemod.fabric.client.mixins.json",
+            "config": "cinderstride.fabric.client.mixins.json",
             "environment": "client"
         },
         {
-            "config": "examplemod.fabric.mixins.json"
+            "config": "cinderstride.fabric.mixins.json"
         },
         {
-            "config": "examplemod.common.main.mixins.json"
+            "config": "cinderstride.common.main.mixins.json"
         }
     ],
     "depends": {
