@@ -2,11 +2,35 @@ plugins {
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
 }
+
+configurations {
+    commonClientResources {
+        canBeResolved = true
+    }
+    commonClientJava {
+        canBeResolved = true
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation(project(":common"))
+
+    // common is wired in via multiloader-loader with the correct attributes
+    // This now points to Dirigo's fabric module thanks to the substitution above
+    implementation "io.drahlek.dirigo:fabric:1.0.0"
+
+    // This points to Dirigo's common module
+    def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+    implementation("io.drahlek.dirigo:common:1.0.0") {
+        attributes {
+            attribute(loaderAttribute, 'common')
+        }
+    }
+
+    add("commonClientResources", project(path: ':common', configuration: 'commonClientResources'))
+    add("commonClientJava", project(path: ':common', configuration: 'commonClientJava'))
 }
 
 loom {
@@ -75,4 +99,20 @@ tasks.register("copyExtraJars", Copy) {
 
 tasks.named('runServer') {
     dependsOn 'copyExtraJars'
+}
+
+tasks.named('runClient') {
+    dependsOn ':common:processResources'
+    dependsOn ':common:processClientResources'
+}
+
+tasks.named('processClientResources') {
+    dependsOn(configurations.commonClientResources)
+    from(configurations.commonClientResources)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.named('compileClientJava', JavaCompile) {
+    dependsOn(configurations.commonClientJava)
+    source(configurations.commonClientJava)
 }
