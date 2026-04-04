@@ -1,13 +1,13 @@
 package io.drahlek.cinderstride.items;
 
 import io.drahlek.cinderstride.Constants;
+import io.drahlek.dirigo.annotation.EventSubscriber;
 import io.drahlek.dirigo.annotation.Item;
+import io.drahlek.dirigo.event.PlayerMovedEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -46,5 +46,10 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     @Override
     public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay displayComponent, Consumer<Component> textConsumer, @NonNull TooltipFlag type) {
         textConsumer.accept(Component.translatable("itemTooltip.cinderstride." + NAME).withStyle(ChatFormatting.RED));
+    }
+
+    @EventSubscriber(PlayerMovedEvent.class)
+    public static void onPlayerMove(PlayerMovedEvent event) {
+        Constants.LOG.info("Player {} moved to {}", event.getPlayer().getDisplayName(), event.getNewPos());
     }
 }

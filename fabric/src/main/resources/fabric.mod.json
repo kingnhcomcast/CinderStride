@@ -36,6 +36,9 @@
         },
         {
             "config": "cinderstride.common.main.mixins.json"
+        },
+        {
+            "config": "dirigo.common.mixins.json"
         }
     ],
     "depends": {
