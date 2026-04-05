@@ -8,11 +8,15 @@ repositories {
     maven { url "https://maven.nucleoid.xyz/" }
 }
 
+def localRuntimeModPaths = providers.provider {
+    configurations.localRuntime.files
+        .findAll { it.exists() }
+        .collect { it.absolutePath }
+        .join(File.pathSeparator)
+}
+def clientDevModJarPath = tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
+
 configurations {
-    fabricDevelopmentMods {
-        canBeResolved = true
-        canBeConsumed = false
-    }
     commonClientResources {
         canBeResolved = true
     }
@@ -21,67 +25,19 @@ configurations {
     }
 }
 
-configurations.named('implementation') {
-    extendsFrom(configurations.fabricDevelopmentMods)
-}
-
-def developmentModListFile = layout.buildDirectory.file("loom-cache/fabric-development-mods.txt")
-def developmentModListPath = "@${developmentModListFile.get().asFile.absolutePath}"
-def clientDevelopmentModListFile = layout.buildDirectory.file("loom-cache/fabric-client-development-mods.txt")
-def clientDevelopmentModListPath = "@${clientDevelopmentModListFile.get().asFile.absolutePath}"
-def hasFabricMetadata = { File file ->
-    if (!file.name.endsWith('.jar')) {
-        return false
-    }
-
-    def zip = new java.util.zip.ZipFile(file)
-    try {
-        return zip.getEntry('fabric-installer.json') != null || zip.getEntry('fabric.mod.json') != null
-    } finally {
-        zip.close()
-    }
-}
-def resolveFabricDevelopmentModPaths = {
-    configurations.fabricDevelopmentMods.resolve()
-            .findAll(hasFabricMetadata)
-            .collect { it.absolutePath }
-            .sort()
-}
-
-tasks.register('writeFabricDevelopmentModList') {
-    inputs.files(configurations.fabricDevelopmentMods)
-    outputs.file(developmentModListFile)
-
-    doLast {
-        def outputFile = developmentModListFile.get().asFile
-        outputFile.parentFile.mkdirs()
-
-        outputFile.setText(resolveFabricDevelopmentModPaths().join(System.lineSeparator()), 'UTF-8')
-    }
-}
-
-tasks.register('writeFabricClientDevelopmentModList') {
-    dependsOn(tasks.named('jar'))
-    inputs.files(configurations.fabricDevelopmentMods, tasks.named('jar'))
-    outputs.file(clientDevelopmentModListFile)
-
-    doLast {
-        def outputFile = clientDevelopmentModListFile.get().asFile
-        outputFile.parentFile.mkdirs()
-
-        def clientModFiles = resolveFabricDevelopmentModPaths() + tasks.named('jar').get().archiveFile.get().asFile.absolutePath
-        outputFile.setText(clientModFiles.unique().join(System.lineSeparator()), 'UTF-8')
-    }
-}
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    add("fabricDevelopmentMods", "net.fabricmc:fabric-loader:${fabric_loader_version}")
-    add("fabricDevelopmentMods", "net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    // common is wired in via multiloader-loader with the correct attributes
-    // This now points to Dirigo's fabric module thanks to the substitution above
-    add("fabricDevelopmentMods", "io.drahlek:fabric:1.0.0")
+    // Keep dependent Fabric mods on localRuntime so the run configs can feed them to Fabric Loader.
+    add("localRuntime", "net.fabricmc:fabric-loader:${fabric_loader_version}")
+    add("localRuntime", "net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+
+    // common is wired in via multiloader-loader with the correct attributes.
+    // This resolves to Dirigo's fabric module through the composite build in settings.gradle.
+    implementation "io.drahlek:fabric:1.0.0"
+    add("localRuntime", "io.drahlek:fabric:1.0.0")
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
@@ -95,11 +51,13 @@ dependencies {
     add("commonClientJava", project(path: ':common', configuration: 'commonClientJava'))
 }
 
+def clientRuntimeModPaths = "${localRuntimeModPaths.get()}${File.pathSeparator}${clientDevModJarPath}"
+
 loom {
     splitEnvironmentSourceSets()
 
     mods {
-        "modid" {
+        "${mod_id}" {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
@@ -114,17 +72,22 @@ loom {
             client()
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
-            property('fabric.addMods', clientDevelopmentModListPath)
             runDir('runs/client')
+            property('fabric.addMods', clientRuntimeModPaths)
         }
         server {
             server()
             setConfigName('Fabric Server')
             ideConfigGenerated(true)
-            property('fabric.addMods', developmentModListPath)
             runDir('runs/server')
+            property('fabric.addMods', localRuntimeModPaths.get())
         }
     }
+}
+
+tasks.named('runClient') {
+    // The client run needs the built mod jar as a Fabric mod candidate in addition to the split source sets.
+    dependsOn(tasks.named('jar'))
 }
 
 java {
@@ -164,14 +127,4 @@ tasks.named('processClientResources') {
 tasks.named('compileClientJava', JavaCompile) {
     dependsOn(configurations.commonClientJava)
     source(configurations.commonClientJava)
-}
-
-['runClient', 'runServer'].each { taskName ->
-    tasks.named(taskName) {
-        dependsOn(tasks.named('writeFabricDevelopmentModList'))
-    }
-}
-
-tasks.named('runClient') {
-    dependsOn(tasks.named('writeFabricClientDevelopmentModList'))
 }
