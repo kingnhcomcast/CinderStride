@@ -1,5 +1,6 @@
 plugins {
     id 'multiloader-loader'
+    id 'multiloader-fabric-composite'
     id 'net.fabricmc.fabric-loom'
 }
 
@@ -7,14 +8,6 @@ repositories {
     maven { url "https://maven.terraformersmc.com/releases/" }
     maven { url "https://maven.nucleoid.xyz/" }
 }
-
-def localRuntimeModPaths = providers.provider {
-    configurations.localRuntime.files
-        .findAll { it.exists() }
-        .collect { it.absolutePath }
-        .join(File.pathSeparator)
-}
-def clientDevModJarPath = tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
 
 configurations {
     commonClientResources {
@@ -27,17 +20,12 @@ configurations {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-
-    // Keep dependent Fabric mods on localRuntime so the run configs can feed them to Fabric Loader.
-    add("localRuntime", "net.fabricmc:fabric-loader:${fabric_loader_version}")
-    add("localRuntime", "net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+    developmentModImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    developmentModImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     // common is wired in via multiloader-loader with the correct attributes.
     // This resolves to Dirigo's fabric module through the composite build in settings.gradle.
-    implementation "io.drahlek:fabric:1.0.0"
-    add("localRuntime", "io.drahlek:fabric:1.0.0")
+    developmentModImplementation "io.drahlek:fabric:1.0.0"
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
@@ -50,8 +38,6 @@ dependencies {
     add("commonClientResources", project(path: ':common', configuration: 'commonClientResources'))
     add("commonClientJava", project(path: ':common', configuration: 'commonClientJava'))
 }
-
-def clientRuntimeModPaths = "${localRuntimeModPaths.get()}${File.pathSeparator}${clientDevModJarPath}"
 
 loom {
     splitEnvironmentSourceSets()
@@ -73,21 +59,14 @@ loom {
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
             runDir('runs/client')
-            property('fabric.addMods', clientRuntimeModPaths)
         }
         server {
             server()
             setConfigName('Fabric Server')
             ideConfigGenerated(true)
             runDir('runs/server')
-            property('fabric.addMods', localRuntimeModPaths.get())
         }
     }
-}
-
-tasks.named('runClient') {
-    // The client run needs the built mod jar as a Fabric mod candidate in addition to the split source sets.
-    dependsOn(tasks.named('jar'))
 }
 
 java {
