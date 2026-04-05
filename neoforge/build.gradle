@@ -3,6 +3,8 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+
 sourceSets {
     client {
         java.srcDir 'src/client/java'
@@ -74,12 +76,21 @@ dependencies {
     commonClientJava project(path: ':common', configuration: 'commonClientJava')
     commonClientResources project(path: ':common', configuration: 'commonClientResources')
 
+    // This resolves to Dirigo's neoforge module through the composite build in settings.gradle.
+    implementation "io.drahlek:neoforge:1.0.0"
+
+    // This points to Dirigo's common module.
+    implementation("io.drahlek:common:1.0.0") {
+        attributes {
+            attribute(loaderAttribute, 'common')
+        }
+    }
+
     // common is wired in via multiloader-loader with the correct attributes
 }
 
 
 // Implement mcgradleconventions loader attribute
-def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
     configurations.named("$variant") {
         attributes {

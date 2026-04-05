@@ -22,24 +22,23 @@ import java.util.function.Consumer;
 @Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_stride_boots";
+    public static final net.minecraft.world.item.Item.Properties PROPERTIES = new net.minecraft.world.item.Item.Properties()
+            .stacksTo(1)
+            .fireResistant();
     //static public final ResourceKey<CreativeModeTab> CREATIVE_TAB = CreativeModeTabs.COMBAT;
 
-    public static Properties PROPERTIES = new Properties().humanoidArmor( new ArmorMaterial(
-                    ArmorMaterials.NETHERITE.durability(),
-                    ArmorMaterials.NETHERITE.defense(),
-                    ArmorMaterials.NETHERITE.enchantmentValue(),
-                    ArmorMaterials.NETHERITE.equipSound(),
-                    ArmorMaterials.NETHERITE.toughness(),
-                    ArmorMaterials.NETHERITE.knockbackResistance(),
-                    ArmorMaterials.NETHERITE.repairIngredient(),
-                    ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, NAME))
-            ), ArmorType.BOOTS)
-            .stacksTo(1)
-            .fireResistant()
-            .durability(ArmorType.BOOTS.getDurability(ArmorMaterials.NETHERITE.durability()));
-
-    public CinderStrideBoots(Properties properties) {
-        super(properties);
+    public CinderStrideBoots(net.minecraft.world.item.Item.Properties properties) {
+        super(properties.humanoidArmor( new ArmorMaterial(
+                        ArmorMaterials.NETHERITE.durability(),
+                        ArmorMaterials.NETHERITE.defense(),
+                        ArmorMaterials.NETHERITE.enchantmentValue(),
+                        ArmorMaterials.NETHERITE.equipSound(),
+                        ArmorMaterials.NETHERITE.toughness(),
+                        ArmorMaterials.NETHERITE.knockbackResistance(),
+                        ArmorMaterials.NETHERITE.repairIngredient(),
+                        ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, NAME))
+                ), ArmorType.BOOTS)
+                .durability(ArmorType.BOOTS.getDurability(ArmorMaterials.NETHERITE.durability())));
     }
 
     //TODO see https://wiki.fabricmc.net/tutorial:tooltip
@@ -50,6 +49,6 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
 
     @EventSubscriber(PlayerMovedEvent.class)
     public static void onPlayerMove(PlayerMovedEvent event) {
-        Constants.LOG.info("Player {} moved to {}", event.getPlayer().getDisplayName(), event.getNewPos());
+        Constants.LOG.info("Player {} moved to {}", event.getPlayer().getName(), event.getNewPos());
     }
 }
