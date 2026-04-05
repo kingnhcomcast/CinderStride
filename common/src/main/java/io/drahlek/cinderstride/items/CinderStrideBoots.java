@@ -22,13 +22,12 @@ import java.util.function.Consumer;
 @Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_stride_boots";
-    public static final net.minecraft.world.item.Item.Properties PROPERTIES = new net.minecraft.world.item.Item.Properties()
-            .stacksTo(1)
-            .fireResistant();
-    //static public final ResourceKey<CreativeModeTab> CREATIVE_TAB = CreativeModeTabs.COMBAT;
 
-    public CinderStrideBoots(net.minecraft.world.item.Item.Properties properties) {
-        super(properties.humanoidArmor( new ArmorMaterial(
+    public CinderStrideBoots(Properties properties) {
+        super(properties
+                .stacksTo(1)
+                .fireResistant()
+                .humanoidArmor( new ArmorMaterial(
                         ArmorMaterials.NETHERITE.durability(),
                         ArmorMaterials.NETHERITE.defense(),
                         ArmorMaterials.NETHERITE.enchantmentValue(),
