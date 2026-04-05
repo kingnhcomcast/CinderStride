@@ -9,6 +9,10 @@ repositories {
 }
 
 configurations {
+    fabricDevelopmentMods {
+        canBeResolved = true
+        canBeConsumed = false
+    }
     commonClientResources {
         canBeResolved = true
     }
@@ -17,14 +21,67 @@ configurations {
     }
 }
 
+configurations.named('implementation') {
+    extendsFrom(configurations.fabricDevelopmentMods)
+}
+
+def developmentModListFile = layout.buildDirectory.file("loom-cache/fabric-development-mods.txt")
+def developmentModListPath = "@${developmentModListFile.get().asFile.absolutePath}"
+def clientDevelopmentModListFile = layout.buildDirectory.file("loom-cache/fabric-client-development-mods.txt")
+def clientDevelopmentModListPath = "@${clientDevelopmentModListFile.get().asFile.absolutePath}"
+def hasFabricMetadata = { File file ->
+    if (!file.name.endsWith('.jar')) {
+        return false
+    }
+
+    def zip = new java.util.zip.ZipFile(file)
+    try {
+        return zip.getEntry('fabric-installer.json') != null || zip.getEntry('fabric.mod.json') != null
+    } finally {
+        zip.close()
+    }
+}
+def resolveFabricDevelopmentModPaths = {
+    configurations.fabricDevelopmentMods.resolve()
+            .findAll(hasFabricMetadata)
+            .collect { it.absolutePath }
+            .sort()
+}
+
+tasks.register('writeFabricDevelopmentModList') {
+    inputs.files(configurations.fabricDevelopmentMods)
+    outputs.file(developmentModListFile)
+
+    doLast {
+        def outputFile = developmentModListFile.get().asFile
+        outputFile.parentFile.mkdirs()
+
+        outputFile.setText(resolveFabricDevelopmentModPaths().join(System.lineSeparator()), 'UTF-8')
+    }
+}
+
+tasks.register('writeFabricClientDevelopmentModList') {
+    dependsOn(tasks.named('jar'))
+    inputs.files(configurations.fabricDevelopmentMods, tasks.named('jar'))
+    outputs.file(clientDevelopmentModListFile)
+
+    doLast {
+        def outputFile = clientDevelopmentModListFile.get().asFile
+        outputFile.parentFile.mkdirs()
+
+        def clientModFiles = resolveFabricDevelopmentModPaths() + tasks.named('jar').get().archiveFile.get().asFile.absolutePath
+        outputFile.setText(clientModFiles.unique().join(System.lineSeparator()), 'UTF-8')
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    add("fabricDevelopmentMods", "net.fabricmc:fabric-loader:${fabric_loader_version}")
+    add("fabricDevelopmentMods", "net.fabricmc.fabric-api:fabric-api:${fabric_version}")
 
     // common is wired in via multiloader-loader with the correct attributes
     // This now points to Dirigo's fabric module thanks to the substitution above
-    implementation "io.drahlek:fabric:1.0.0"
+    add("fabricDevelopmentMods", "io.drahlek:fabric:1.0.0")
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
@@ -57,12 +114,14 @@ loom {
             client()
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
+            property('fabric.addMods', clientDevelopmentModListPath)
             runDir('runs/client')
         }
         server {
             server()
             setConfigName('Fabric Server')
             ideConfigGenerated(true)
+            property('fabric.addMods', developmentModListPath)
             runDir('runs/server')
         }
     }
@@ -96,35 +155,6 @@ sourceSets.configureEach {
     }
 }
 
-tasks.register("copyExtraJars", Copy) {
-    from("${projectDir}/extraJars")
-    include("*.jar")
-    into(project.file("runs/server/mods"))
-}
-
-tasks.register("copyExtraClientJars", Copy) {
-    from("${projectDir}/extraJars")
-    include("*.jar")
-    into(project.file("runs/client/mods"))
-}
-
-tasks.register("copyClientModJar", Copy) {
-    dependsOn(tasks.named("jar"))
-    from(tasks.named("jar").flatMap { it.archiveFile })
-    into(project.file("runs/client/mods"))
-}
-
-tasks.named('runServer') {
-    dependsOn 'copyExtraJars'
-}
-
-tasks.named('runClient') {
-    dependsOn 'copyExtraClientJars'
-    dependsOn 'copyClientModJar'
-    dependsOn ':common:processResources'
-    dependsOn ':common:processClientResources'
-}
-
 tasks.named('processClientResources') {
     dependsOn(configurations.commonClientResources)
     from(configurations.commonClientResources)
@@ -134,4 +164,14 @@ tasks.named('processClientResources') {
 tasks.named('compileClientJava', JavaCompile) {
     dependsOn(configurations.commonClientJava)
     source(configurations.commonClientJava)
+}
+
+['runClient', 'runServer'].each { taskName ->
+    tasks.named(taskName) {
+        dependsOn(tasks.named('writeFabricDevelopmentModList'))
+    }
+}
+
+tasks.named('runClient') {
+    dependsOn(tasks.named('writeFabricClientDevelopmentModList'))
 }
