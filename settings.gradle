@@ -47,13 +47,7 @@ plugins {
 
 // This should match the folder name of the project, or else IDEA may complain (see https://youtrack.jetbrains.com/issue/IDEA-317606)
 rootProject.name = 'CinderStride'
-includeBuild('../Dirigo') {
-    dependencySubstitution {
-        // Substitute the "virtual" library name with the actual sub-project
-        substitute module('io.drahlek.dirigo:common') using project(':common')
-        substitute module('io.drahlek.dirigo:fabric') using project(':fabric')
-    }
-}
+includeBuild('../Dirigo')
 include('common')
 include('fabric')
 include('neoforge')

@@ -3,6 +3,11 @@ plugins {
     id 'net.fabricmc.fabric-loom'
 }
 
+repositories {
+    maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://maven.nucleoid.xyz/" }
+}
+
 configurations {
     commonClientResources {
         canBeResolved = true
@@ -19,11 +24,11 @@ dependencies {
 
     // common is wired in via multiloader-loader with the correct attributes
     // This now points to Dirigo's fabric module thanks to the substitution above
-    implementation "io.drahlek.dirigo:fabric:1.0.0"
+    implementation "io.drahlek:fabric:1.0.0"
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-    implementation("io.drahlek.dirigo:common:1.0.0") {
+    implementation("io.drahlek:common:1.0.0") {
         attributes {
             attribute(loaderAttribute, 'common')
         }
@@ -97,11 +102,25 @@ tasks.register("copyExtraJars", Copy) {
     into(project.file("runs/server/mods"))
 }
 
+tasks.register("copyExtraClientJars", Copy) {
+    from("${projectDir}/extraJars")
+    include("*.jar")
+    into(project.file("runs/client/mods"))
+}
+
+tasks.register("copyClientModJar", Copy) {
+    dependsOn(tasks.named("jar"))
+    from(tasks.named("jar").flatMap { it.archiveFile })
+    into(project.file("runs/client/mods"))
+}
+
 tasks.named('runServer') {
     dependsOn 'copyExtraJars'
 }
 
 tasks.named('runClient') {
+    dependsOn 'copyExtraClientJars'
+    dependsOn 'copyClientModJar'
     dependsOn ':common:processResources'
     dependsOn ':common:processClientResources'
 }
