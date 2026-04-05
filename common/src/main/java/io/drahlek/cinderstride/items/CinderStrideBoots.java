@@ -5,9 +5,12 @@ import io.drahlek.dirigo.annotation.EventSubscriber;
 import io.drahlek.dirigo.annotation.Item;
 import io.drahlek.dirigo.event.PlayerMovedEvent;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -15,9 +18,17 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
+
+import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 
 @Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
@@ -48,6 +59,48 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
 
     @EventSubscriber(PlayerMovedEvent.class)
     public static void onPlayerMove(PlayerMovedEvent event) {
-        Constants.LOG.info("Player {} moved to {}", event.getPlayer().getName(), event.getNewPos());
+        Player player = event.getPlayer();
+        //check if player is wearing boots
+        if(!wearingBoots(player))
+            return;
+
+        //check if player is on ground
+        if(!player.onGround()) {
+            return;
+        }
+
+        //get blocks at same Y level within radius that re lava
+        List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, 5);
+
+        Constants.LOG.info("Player {} moved to {} while wearing boots, level {}", player.getName(), event.getNewPos(), player.level());
+
+        //turn all source blocks with radius to basalt
+        hardenBlocks(lavaBlocks, player.level());
     }
+
+    private static List<BlockPos> getLavaBlocksWithinRadius(Player player, int radius) {
+        List<BlockPos> lavaBlocks = new ArrayList<>();
+        BlockPos center = player.getOnPos();
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                BlockPos pos = center.offset(x, 0, z);
+                BlockState state = player.level().getBlockState(pos);
+
+                if (state.is(Blocks.LAVA) && state.getValue(LiquidBlock.LEVEL) == 0) {
+                    lavaBlocks.add(pos);
+                }
+            }
+        }
+        return lavaBlocks;
+    }
+
+
+    private static boolean wearingBoots(Player player) {
+        return player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof CinderStrideBoots;
+    }
+
+    private static void hardenBlocks(List<BlockPos> blocks, Level level) {
+        blocks.forEach(blockPos -> level.setBlock(blockPos, Blocks.BASALT.defaultBlockState(), UPDATE_ALL));
+    }
+
 }
