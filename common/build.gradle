@@ -60,6 +60,9 @@ dependencies {
             attribute(loaderAttribute, 'common')
         }
     }
+
+    compileOnly "org.projectlombok:lombok:1.18.44"
+    annotationProcessor "org.projectlombok:lombok:1.18.44"
 }
 
 // Link the client output to the main JAR for the loaders to pick up

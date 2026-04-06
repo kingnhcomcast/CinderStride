@@ -1,10 +1,20 @@
 V1.0.0
 * add CinderStride Boots item, creative menu, textures, icon. based on netherite boots
-- walk on lava, turn to basalt, only full source blocks. what does frostwalker do for running water?
+* walk on lava, turn to basalt, only full source blocks.
+* decay back to lava
+    - stages of warming with different textures
 - durability loss while walking on lava
 - add on item frame like elytra
+- create config
+    radius
+    decay time
+    enabled
 
+- CinderStrideConfig can be made fully generic
+- read config.enabled
+- persist scheduled events
 - fix creative tab, dirigo hardcoded to COMBAT
+- optimize: register event only (only do check) when wearing boots
 
 V1.1.0
 - add molten core item

@@ -1,8 +1,10 @@
 package io.drahlek.cinderstride.items;
 
 import io.drahlek.cinderstride.Constants;
+import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.annotation.EventSubscriber;
 import io.drahlek.dirigo.annotation.Item;
+import io.drahlek.dirigo.schedule.EventScheduler;
 import io.drahlek.dirigo.event.PlayerMovedEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -61,7 +63,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     public static void onPlayerMove(PlayerMovedEvent event) {
         Player player = event.getPlayer();
         //check if player is wearing boots
-        if(!wearingBoots(player))
+        if(!isWearingBoots(player))
             return;
 
         //check if player is on ground
@@ -70,9 +72,9 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         }
 
         //get blocks at same Y level within radius that re lava
-        List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, 5);
+        List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, CinderStrideConfig.data().getRadius());
 
-        Constants.LOG.info("Player {} moved to {} while wearing boots, level {}", player.getName(), event.getNewPos(), player.level());
+        Constants.LOG.info("Player {} moved to {} while wearing boots, level {} {}", player.getName(), event.getNewPos(), player.level(), player.level().dimension());
 
         //turn all source blocks with radius to basalt
         hardenBlocks(lavaBlocks, player.level());
@@ -95,12 +97,19 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     }
 
 
-    private static boolean wearingBoots(Player player) {
+    private static boolean isWearingBoots(Player player) {
         return player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof CinderStrideBoots;
     }
 
     private static void hardenBlocks(List<BlockPos> blocks, Level level) {
         blocks.forEach(blockPos -> level.setBlock(blockPos, Blocks.BASALT.defaultBlockState(), UPDATE_ALL));
+        EventScheduler.INSTANCE.scheduleCallback(level, () -> revertBlock(level, blocks), CinderStrideConfig.data().getDecayTicks());
+    }
+
+    private static void revertBlock(Level level, List<BlockPos> blocks) {
+        blocks.forEach(blockPos -> {
+            level.setBlock(blockPos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
+        });
     }
 
 }

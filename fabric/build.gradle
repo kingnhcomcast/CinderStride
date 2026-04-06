@@ -35,6 +35,9 @@ dependencies {
         }
     }
 
+    compileOnly "org.projectlombok:lombok:1.18.44"
+    annotationProcessor "org.projectlombok:lombok:1.18.44"
+
     add("commonClientResources", project(path: ':common', configuration: 'commonClientResources'))
     add("commonClientJava", project(path: ':common', configuration: 'commonClientJava'))
 }

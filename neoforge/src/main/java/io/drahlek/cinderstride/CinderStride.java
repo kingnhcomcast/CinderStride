@@ -14,6 +14,6 @@ public class CinderStride {
         if (Services.ITEM_REGISTRAR instanceof NeoForgeItemRegistrar registrar) {
             registrar.initialize(eventBus, Constants.MOD_ID);
         }
-        DirigoCommon.init();
+        CinderStrideCommon.init();
     }
 }
