@@ -4,13 +4,16 @@ V1.0.0
 * decay back to lava
     - stages of warming with different textures
 - durability loss while walking on lava
-- add on item frame like elytra
-- create config
+* add on item frame like elytra
+* create config
     radius
     decay time
     enabled
+- config ui
+
 
 - CinderStrideConfig can be made fully generic
+- make sure config server side only
 - read config.enabled
 - persist scheduled events
 - fix creative tab, dirigo hardcoded to COMBAT
