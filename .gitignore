@@ -24,3 +24,7 @@ run
 runs
 .tmp/*
 .tmp*/*
+/net/*
+/data*
+
+

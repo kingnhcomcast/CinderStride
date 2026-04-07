@@ -1,5 +1,6 @@
 package io.drahlek.cinderstride;
 
+import io.drahlek.dirigo.registrars.BlockRegistrar;
 import io.drahlek.dirigo.registrars.EventRegistrar;
 import io.drahlek.dirigo.registrars.ItemRegistrar;
 
@@ -15,6 +16,7 @@ public class CinderStrideCommon {
     public static void init() {
         Constants.LOG.info("{} Common Initialize", Constants.MOD_NAME);
         ItemRegistrar.registerItems(Constants.MOD_ID, Constants.GROUP);
+        BlockRegistrar.registerBlocks(Constants.MOD_ID, Constants.GROUP);
         EventRegistrar.registerEvents(Constants.GROUP);
     }
 }

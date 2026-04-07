@@ -2,7 +2,8 @@ V1.0.0
 * add CinderStride Boots item, creative menu, textures, icon. based on netherite boots
 * walk on lava, turn to basalt, only full source blocks.
 * decay back to lava
-    - stages of warming with different textures
+    * stages of warming with different textures
+    - decay time is random per block
 - durability loss while walking on lava
 * add on item frame like elytra
 * create config
@@ -10,14 +11,17 @@ V1.0.0
     decay time
     enabled
 - config ui
+- if block is broken, replace with lava
 
 
 - CinderStrideConfig can be made fully generic
 - make sure config server side only
 - read config.enabled
 - persist scheduled events
+- persist blockstates
 - fix creative tab, dirigo hardcoded to COMBAT
 - optimize: register event only (only do check) when wearing boots
+- once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
 
 V1.1.0
 - add molten core item

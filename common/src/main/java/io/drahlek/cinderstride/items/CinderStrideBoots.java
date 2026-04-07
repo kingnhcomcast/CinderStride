@@ -1,9 +1,11 @@
 package io.drahlek.cinderstride.items;
 
 import io.drahlek.cinderstride.Constants;
+import io.drahlek.cinderstride.blocks.CooledLava;
 import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.annotation.EventSubscriber;
 import io.drahlek.dirigo.annotation.Item;
+import io.drahlek.dirigo.registrars.BlockRegistrar;
 import io.drahlek.dirigo.schedule.EventScheduler;
 import io.drahlek.dirigo.event.PlayerMovedEvent;
 import net.minecraft.ChatFormatting;
@@ -35,6 +37,7 @@ import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 @Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_stride_boots";
+    private static final int MAX_COOLED_LAVA_STAGE = 3;
 
     public CinderStrideBoots(Properties properties) {
         super(properties
@@ -77,7 +80,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         Constants.LOG.info("Player {} moved to {} while wearing boots, level {} {}", player.getName(), event.getNewPos(), player.level(), player.level().dimension());
 
         //turn all source blocks with radius to basalt
-        hardenBlocks(lavaBlocks, player.level());
+        coolBlocks(lavaBlocks, player.level());
     }
 
     private static List<BlockPos> getLavaBlocksWithinRadius(Player player, int radius) {
@@ -101,9 +104,44 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         return player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof CinderStrideBoots;
     }
 
-    private static void hardenBlocks(List<BlockPos> blocks, Level level) {
-        blocks.forEach(blockPos -> level.setBlock(blockPos, Blocks.BASALT.defaultBlockState(), UPDATE_ALL));
-        EventScheduler.INSTANCE.scheduleCallback(level, () -> revertBlock(level, blocks), CinderStrideConfig.data().getDecayTicks());
+    private static void coolBlocks(List<BlockPos> blocks, Level level) {
+        if (blocks.isEmpty()) {
+            return;
+        }
+
+        var cooledLavaBlock = BlockRegistrar.blocks.get(CooledLava.NAME);
+        if (cooledLavaBlock == null) {
+            return;
+        }
+
+        BlockState stageZero = cooledLavaBlock.defaultBlockState().setValue(CooledLava.STAGE, 0);
+        blocks.forEach(blockPos -> level.setBlock(blockPos, stageZero, UPDATE_ALL));
+        scheduleStageTransition(level, blocks, 0);
+    }
+
+    private static void scheduleStageTransition(Level level, List<BlockPos> blocks, int currentStage) {
+        EventScheduler.INSTANCE.scheduleCallback(level, () -> {
+            if (currentStage >= MAX_COOLED_LAVA_STAGE) {
+                revertBlock(level, blocks);
+                return;
+            }
+
+            int nextStage = currentStage + 1;
+            blocks.forEach(blockPos -> {
+                BlockState state = level.getBlockState(blockPos);
+                if (!state.hasProperty(CooledLava.STAGE)) {
+                    return;
+                }
+
+                if (state.getValue(CooledLava.STAGE) != currentStage) {
+                    return;
+                }
+
+                level.setBlock(blockPos, state.setValue(CooledLava.STAGE, nextStage), UPDATE_ALL);
+            });
+
+            scheduleStageTransition(level, blocks, nextStage);
+        }, CinderStrideConfig.data().getDecayTicks());
     }
 
     private static void revertBlock(Level level, List<BlockPos> blocks) {
