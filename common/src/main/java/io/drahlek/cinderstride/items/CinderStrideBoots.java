@@ -6,7 +6,6 @@ import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.annotation.EventSubscriber;
 import io.drahlek.dirigo.annotation.Item;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
-import io.drahlek.dirigo.schedule.EventScheduler;
 import io.drahlek.dirigo.event.PlayerMovedEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -37,7 +36,6 @@ import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 @Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_stride_boots";
-    private static final int MAX_COOLED_LAVA_STAGE = 3;
 
     public CinderStrideBoots(Properties properties) {
         super(properties
@@ -64,6 +62,11 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
 
     @EventSubscriber(PlayerMovedEvent.class)
     public static void onPlayerMove(PlayerMovedEvent event) {
+        var config = CinderStrideConfig.data();
+        if (!config.isEnabled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         //check if player is wearing boots
         if(!isWearingBoots(player))
@@ -75,11 +78,13 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         }
 
         //get blocks at same Y level within radius that re lava
-        List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, CinderStrideConfig.data().getRadius());
+        List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, config.getRadius());
+        if (lavaBlocks.isEmpty()) {
+            return;
+        }
 
-        Constants.LOG.info("Player {} moved to {} while wearing boots, level {} {}", player.getName(), event.getNewPos(), player.level(), player.level().dimension());
+        Constants.LOG.debug("Cooling {} lava source blocks near {} at {}", lavaBlocks.size(), player.getName().getString(), event.getNewPos());
 
-        //turn all source blocks with radius to basalt
         coolBlocks(lavaBlocks, player.level());
     }
 
@@ -109,45 +114,14 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
             return;
         }
 
-        var cooledLavaBlock = BlockRegistrar.blocks.get(CooledLava.NAME);
-        if (cooledLavaBlock == null) {
+        var cooledLavaBlockSupplier = BlockRegistrar.blocks.get(CooledLava.NAME);
+        if (cooledLavaBlockSupplier == null) {
             return;
         }
+        var cooledLavaBlock = cooledLavaBlockSupplier.get();
 
         BlockState stageZero = cooledLavaBlock.defaultBlockState().setValue(CooledLava.STAGE, 0);
         blocks.forEach(blockPos -> level.setBlock(blockPos, stageZero, UPDATE_ALL));
-        scheduleStageTransition(level, blocks, 0);
-    }
-
-    private static void scheduleStageTransition(Level level, List<BlockPos> blocks, int currentStage) {
-        EventScheduler.INSTANCE.scheduleCallback(level, () -> {
-            if (currentStage >= MAX_COOLED_LAVA_STAGE) {
-                revertBlock(level, blocks);
-                return;
-            }
-
-            int nextStage = currentStage + 1;
-            blocks.forEach(blockPos -> {
-                BlockState state = level.getBlockState(blockPos);
-                if (!state.hasProperty(CooledLava.STAGE)) {
-                    return;
-                }
-
-                if (state.getValue(CooledLava.STAGE) != currentStage) {
-                    return;
-                }
-
-                level.setBlock(blockPos, state.setValue(CooledLava.STAGE, nextStage), UPDATE_ALL);
-            });
-
-            scheduleStageTransition(level, blocks, nextStage);
-        }, CinderStrideConfig.data().getDecayTicks());
-    }
-
-    private static void revertBlock(Level level, List<BlockPos> blocks) {
-        blocks.forEach(blockPos -> {
-            level.setBlock(blockPos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
-        });
     }
 
 }

@@ -1,10 +1,18 @@
 package io.drahlek.cinderstride.blocks;
 
+import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.annotation.Block;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+
+import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 
 @Block(id="cooled_lava")
 public class CooledLava extends net.minecraft.world.level.block.Block {
@@ -19,5 +27,33 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<net.minecraft.world.level.block.Block, BlockState> builder) {
         builder.add(STAGE);
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!level.isClientSide() && !oldState.is(this)) {
+            level.scheduleTick(pos, this, getDecayDelay());
+        }
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!state.is(this)) {
+            return;
+        }
+
+        int stage = state.getValue(STAGE);
+        if (stage >= 3) {
+            level.setBlock(pos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
+            return;
+        }
+
+        level.setBlock(pos, state.setValue(STAGE, stage + 1), UPDATE_ALL);
+        level.scheduleTick(pos, this, getDecayDelay());
+    }
+
+    private static int getDecayDelay() {
+        return (int) Math.max(1L, Math.min(Integer.MAX_VALUE, CinderStrideConfig.data().getDecayTicks()));
     }
 }
