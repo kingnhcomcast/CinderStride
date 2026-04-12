@@ -1,7 +1,7 @@
 V1.0.0
 * add CinderStride Boots item, creative menu, textures, icon. based on netherite boots
 * walk on lava, turn to basalt, only full source blocks.
-* decay back to lava
+- decay back to lava
     * stages of warming with different textures
     - decay time is random per block
 - durability loss while walking on lava
@@ -12,7 +12,9 @@ V1.0.0
     enabled
 - config ui
 - if block is broken, replace with lava
-
+- use correct block properties (copy basalt)
+- fix cooled lava colors
+* fixed item frame fixed
 
 - CinderStrideConfig can be made fully generic
 - make sure config server side only
