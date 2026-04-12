@@ -3,7 +3,7 @@ V1.0.0
 * walk on lava, turn to basalt, only full source blocks.
 - decay back to lava
     * stages of warming with different textures
-    - decay time is random per block
+    - make decay time random per block
 - durability loss while walking on lava
 * add on item frame like elytra
 * create config
@@ -13,7 +13,7 @@ V1.0.0
 - config ui
 - if block is broken, replace with lava
 - use correct block properties (copy basalt)
-- fix cooled lava colors
+* fix cooled lava colors
 * fixed item frame fixed
 
 - CinderStrideConfig can be made fully generic
