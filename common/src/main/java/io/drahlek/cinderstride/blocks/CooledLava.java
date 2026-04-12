@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-import static net.minecraft.world.level.block.Block.UPDATE_ALL;
-
 @Block(id="cooled_lava")
 public class CooledLava extends net.minecraft.world.level.block.Block {
     public final static String NAME = "cooled_lava";
@@ -33,7 +31,7 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (!level.isClientSide() && !oldState.is(this)) {
-            level.scheduleTick(pos, this, getDecayDelay());
+            level.scheduleTick(pos, this, getDecayDelay(level));
         }
     }
 
@@ -50,10 +48,17 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
         }
 
         level.setBlock(pos, state.setValue(STAGE, stage + 1), UPDATE_ALL);
-        level.scheduleTick(pos, this, getDecayDelay());
+        level.scheduleTick(pos, this, getDecayDelay(level));
     }
 
-    private static int getDecayDelay() {
-        return (int) Math.max(1L, Math.min(Integer.MAX_VALUE, CinderStrideConfig.data().getDecayTicks()));
+    //TODO get player to call player.getRandom
+    private static int getDecayDelay(Level level) {
+        long decayTicks = CinderStrideConfig.data().getDecayTicks();
+        int variance = Math.toIntExact(decayTicks / 2L);
+        long offset = variance > 0L
+                ? level.getRandom().nextInt(-variance, variance + 1)
+                : 0L;
+        long randomizedDecayTicks = decayTicks + offset;
+        return (int) Math.clamp(randomizedDecayTicks, 1L, Integer.MAX_VALUE);
     }
 }

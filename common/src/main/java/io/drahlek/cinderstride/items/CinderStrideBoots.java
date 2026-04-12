@@ -63,13 +63,15 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     @EventSubscriber(PlayerMovedEvent.class)
     public static void onPlayerMove(PlayerMovedEvent event) {
         var config = CinderStrideConfig.data();
-        if (!config.isEnabled()) {
+
+        Player player = event.getPlayer();
+        if (player.level().isClientSide()) {
             return;
         }
 
-        Player player = event.getPlayer();
         //check if player is wearing boots
-        if(!isWearingBoots(player))
+        ItemStack bootStack = getBoots(player);
+        if(bootStack == null)
             return;
 
         //check if player is on ground
@@ -77,7 +79,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
             return;
         }
 
-        //get blocks at same Y level within radius that re lava
+        //get blocks at same Y level within radius that are lava
         List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, config.getRadius());
         if (lavaBlocks.isEmpty()) {
             return;
@@ -85,7 +87,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
 
         Constants.LOG.debug("Cooling {} lava source blocks near {} at {}", lavaBlocks.size(), player.getName().getString(), event.getNewPos());
 
-        coolBlocks(lavaBlocks, player.level());
+       coolBlocks(lavaBlocks, player, bootStack);
     }
 
     private static List<BlockPos> getLavaBlocksWithinRadius(Player player, int radius) {
@@ -105,11 +107,16 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     }
 
 
-    private static boolean isWearingBoots(Player player) {
-        return player.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof CinderStrideBoots;
+    private static ItemStack getBoots(Player player) {
+        ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
+        if(bootStack.getItem() instanceof CinderStrideBoots) {
+            return bootStack;
+        } else {
+            return null;
+        }
     }
 
-    private static void coolBlocks(List<BlockPos> blocks, Level level) {
+    private static void coolBlocks(List<BlockPos> blocks, Player player, ItemStack bootStack) {
         if (blocks.isEmpty()) {
             return;
         }
@@ -121,7 +128,23 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         var cooledLavaBlock = cooledLavaBlockSupplier.get();
 
         BlockState stageZero = cooledLavaBlock.defaultBlockState().setValue(CooledLava.STAGE, 0);
-        blocks.forEach(blockPos -> level.setBlock(blockPos, stageZero, UPDATE_ALL));
+        blocks.forEach(blockPos -> coolBlock(player, bootStack, blockPos, stageZero));
     }
 
+    private static void coolBlock(Player player, ItemStack bootStack, BlockPos blockPos, BlockState stageZero) {
+        if (canCoolLava(bootStack)) {
+            //transform to cooled_lava
+            player.level().setBlock(blockPos, stageZero, UPDATE_ALL);
+
+            //cause durability loss
+            float durabilityLossChance = CinderStrideConfig.data().getDurabilityLossChance();
+            if (player.getRandom().nextFloat() < durabilityLossChance) {
+                bootStack.hurtAndBreak(1, player, EquipmentSlot.FEET);
+            }
+        }
+    }
+
+    private static boolean canCoolLava(ItemStack bootStack) {
+        return bootStack.getMaxDamage() - bootStack.getDamageValue() > 1;
+    }
 }
