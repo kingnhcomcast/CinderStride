@@ -10,11 +10,10 @@ V1.0.0
     *radius
     *decay time
     - config ui
-    - CinderStrideConfig can be made fully generic
     - make sure config server side only
-- if block is broken, replace with lava
+* if block is broken, replace with lava
 - once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
-- use correct block properties (copy basalt)
+* use correct block properties (copy basalt)
 - add fire resistence to boots
 * fix cooled lava colors
 * fixed item frame fixed
@@ -23,6 +22,7 @@ V1.0.0
 - persist blockstates
 - fix creative tab, dirigo hardcoded to COMBAT
 - optimize: register event only (only do check) when wearing boots
+- CinderStrideConfig can be made fully generic
 
 V1.1.0
 - add molten core item

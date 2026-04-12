@@ -7,10 +7,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 
 @Block(id="cooled_lava")
 public class CooledLava extends net.minecraft.world.level.block.Block {
@@ -18,7 +21,12 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
 
     public CooledLava(BlockBehaviour.Properties properties) {
-        super(properties);
+        super(properties
+                .mapColor(MapColor.COLOR_BLACK)
+                .instrument(NoteBlockInstrument.BASEDRUM)
+                .requiresCorrectToolForDrops()
+                .strength(1.25F, 4.2F)
+                .sound(SoundType.BASALT));
         this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, 0));
     }
 
@@ -49,6 +57,14 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
 
         level.setBlock(pos, state.setValue(STAGE, stage + 1), UPDATE_ALL);
         level.scheduleTick(pos, this, getDecayDelay(level));
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        if (level.getBlockState(pos).isAir()) {
+            level.setBlock(pos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
+        }
     }
 
     //TODO get player to call player.getRandom
