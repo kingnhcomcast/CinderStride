@@ -26,6 +26,7 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .requiresCorrectToolForDrops()
                 .strength(1.25F, 4.2F)
+                .lightLevel(state -> Math.round(state.getValue(STAGE) * (15f / 3f)))
                 .sound(SoundType.BASALT));
         this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, 0));
     }

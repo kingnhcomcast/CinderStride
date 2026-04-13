@@ -12,9 +12,8 @@ V1.0.0
     - config ui
     - make sure config server side only
 * if block is broken, replace with lava
-- once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
+* once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
 * use correct block properties (copy basalt)
-- add fire resistence to boots
 * fix cooled lava colors
 * fixed item frame fixed
 - make sure no cooled lava item in creative
@@ -29,6 +28,7 @@ V1.1.0
 - add crafting recipe for core -> boots - smithing table - instead of crafting, maybe stop durability loss when using
 - add core to bastion loot (chests only)
 - while walking in overworld, light grass (anything burnable and standing on) on fire
+- make fire protection easier to get on enchanting table
 
 misc
 - glow red in dark? or just in nether? or when near bastion?

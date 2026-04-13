@@ -4,6 +4,10 @@
   "package": "io.drahlek.cinderstride.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnvilMenuMixin",
+    "EnchantCommandMixin",
+    "EnchantmentHelperMixin",
+    "ItemCombinerMenuAccessor",
     "MineCraftServerMixin"
   ],
   "injectors": {

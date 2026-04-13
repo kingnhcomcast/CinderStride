@@ -98,7 +98,8 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
                 BlockPos pos = center.offset(x, 0, z);
                 BlockState state = player.level().getBlockState(pos);
 
-                if (state.is(Blocks.LAVA) && state.getValue(LiquidBlock.LEVEL) == 0) {
+                if ((state.is(Blocks.LAVA) && state.getValue(LiquidBlock.LEVEL) == 0) ||
+                     state.is(BlockRegistrar.blocks.get(CooledLava.NAME).get()))   {
                     lavaBlocks.add(pos);
                 }
             }
