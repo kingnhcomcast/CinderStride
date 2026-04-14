@@ -1,8 +1,12 @@
 package io.drahlek.cinderstride;
 
+import com.mojang.brigadier.CommandDispatcher;
+import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
+import io.drahlek.dirigo.registrars.CommandRegistrar;
 import io.drahlek.dirigo.registrars.EventRegistrar;
 import io.drahlek.dirigo.registrars.ItemRegistrar;
+import net.minecraft.commands.CommandSourceStack;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -15,8 +19,13 @@ public class CinderStrideCommon {
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
         Constants.LOG.info("{} Common Initialize", Constants.MOD_NAME);
+        CinderStrideConfig.instance();
         ItemRegistrar.registerItems(Constants.MOD_ID, Constants.GROUP);
         BlockRegistrar.registerBlocks(Constants.MOD_ID, Constants.GROUP);
         EventRegistrar.registerEvents(Constants.GROUP);
+    }
+
+    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+        CommandRegistrar.registerCommands(dispatcher, Constants.MOD_ID, Constants.GROUP);
     }
 }
