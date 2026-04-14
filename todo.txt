@@ -11,7 +11,7 @@ V1.0.0
     *decay time
     - config ui
     - config loaded on server, sent to client on connect, update/reload command
-    - add commands (dirigo supported)
+    * add commands (dirigo supported)
 * if block is broken, replace with lava
 * once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
 * use correct block properties (copy basalt)
