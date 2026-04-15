@@ -7,7 +7,7 @@ public class CinderStrideConfig extends Config<CinderStrideConfigData> {
     private static final CinderStrideConfig INSTANCE = new CinderStrideConfig();
 
     private CinderStrideConfig() {
-        super(Constants.MOD_ID, Constants.MOD_ID + ".json", CinderStrideConfigData.class);
+        super(Constants.MOD_ID, Constants.MOD_NAME, Constants.MOD_ID + ".json", CinderStrideConfigData.class);
     }
 
     public static CinderStrideConfig instance() {
