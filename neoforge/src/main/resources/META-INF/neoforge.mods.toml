@@ -35,7 +35,7 @@ license = "${license}" # Review your options at https://choosealicense.com/.
 [[dependencies.${mod_id}]]
     modId = "dirigo"
     type="required"
-    versionRange = "*"
+    versionRange = "${dirigo_neoforge_version_range}"
     ordering = "NONE"
     side = "BOTH"
 
