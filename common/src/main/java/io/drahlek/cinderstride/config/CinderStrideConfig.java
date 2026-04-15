@@ -6,10 +6,6 @@ import io.drahlek.dirigo.config.Config;
 public class CinderStrideConfig extends Config<CinderStrideConfigData> {
     private static final CinderStrideConfig INSTANCE = new CinderStrideConfig();
 
-    static {
-        INSTANCE.load();
-    }
-
     private CinderStrideConfig() {
         super(Constants.MOD_ID, Constants.MOD_ID + ".json", CinderStrideConfigData.class);
     }
