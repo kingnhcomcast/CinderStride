@@ -6,18 +6,23 @@ V1.0.0
     * make decay time random per block
 * durability loss while walking on lava
 * add on item frame like elytra
-- config
+* config
     *radius
     *decay time
-    - config ui
-    - config loaded on server, sent to client on connect, update/reload command
+    * config ui
+    * config loaded on server, sent to client on connect, update/reload command
     * add commands (dirigo supported)
+    * change config via gui, sync to server and other players
+    * test server non op cant edit ui
 * if block is broken, replace with lava
 * once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
 * use correct block properties (copy basalt)
 * fix cooled lava colors
 * fixed item frame fixed
 * make sure no cooled lava item in creative
+* mod description (shows in mod menu)
+
+
 
 nice to have
 - make items creative tab dynamic, currently hardcoded in dirigo to COMBAT
