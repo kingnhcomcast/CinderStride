@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "cinderstride:block/cooled_lava_3"
+  }
+}

@@ -2,9 +2,12 @@
   "required": true,
   "minVersion": "0.8",
   "package": "io.drahlek.cinderstride.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MineCraftServerMixin"
+    "AnvilMenuMixin",
+    "EnchantCommandMixin",
+    "EnchantmentHelperMixin",
+    "ItemCombinerMenuAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

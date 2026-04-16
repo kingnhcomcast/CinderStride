@@ -41,11 +41,11 @@
     "depends": {
         "fabricloader": ">=${fabric_loader_version}",
         "fabric-api": "*",
+        "dirigo": "${dirigo_fabric_version_range}",
         "minecraft": "~${minecraft_version}",
         "java": ">=${java_version}"
     },
     "suggests": {
-        "another-mod": "*"
     }
 }
   

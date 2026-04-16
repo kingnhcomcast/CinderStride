@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "stage=0": { "model": "cinderstride:block/cooled_lava_0" },
+    "stage=1": { "model": "cinderstride:block/cooled_lava_1" },
+    "stage=2": { "model": "cinderstride:block/cooled_lava_2" },
+    "stage=3": { "model": "cinderstride:block/cooled_lava_3" }
+  }
+}
