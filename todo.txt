@@ -1,0 +1,114 @@
+V1.0.0
+* add CinderStride Boots item, creative menu, textures, icon. based on netherite boots
+* walk on lava, turn to basalt, only full source blocks.
+* decay back to lava
+    * stages of warming with different textures
+    * make decay time random per block
+* durability loss while walking on lava
+* add on item frame like elytra
+* config
+    *radius
+    *decay time
+    * config ui
+    * config loaded on server, sent to client on connect, update/reload command
+    * add commands (dirigo supported)
+    * change config via gui, sync to server and other players
+    * test server non op cant edit ui
+* if block is broken, replace with lava
+* once blocks start decaying, they continue to decay until lava. if player moves, the decay timer should reset
+* use correct block properties (copy basalt)
+* fix cooled lava colors
+* fixed item frame fixed
+* make sure no cooled lava item in creative
+* mod description (shows in mod menu)
+
+
+
+nice to have
+- make items creative tab dynamic, currently hardcoded in dirigo to COMBAT
+- optimize: register event only (only do check) when wearing boots
+- CinderStrideConfig can be made fully generic
+
+
+
+
+
+The Smallest Possible Fix (For v1.0.0 or 1.0.1)
+
+You don’t need a big system.
+
+Just add ONE tiny flavor mechanic:
+
+🔥 Option A (Best): Subtle Fire Trail
+While walking (or sprinting), briefly ignite flammable blocks
+Very short duration, controlled
+
+👉 Adds:
+
+Visual identity
+“Feels powerful”
+Screenshot-worthy moments
+🌋 Option B: Lava Particles / Heat Aura
+Dripping lava particles
+Subtle heat shimmer effect
+Maybe faint fire sound
+
+👉 Adds:
+
+Presence
+Feedback
+Polish
+💨 Option C: Slight Speed Boost on Lava
++10–15% movement speed only while on lava/basalt
+
+👉 Adds:
+
+Feel difference
+Makes it fun, not just functional
+
+Add subtle sounds per stage:
+Stage 2: faint crackle
+Stage 3: stronger bubbling
+Stage 4: active lava sound
+
+👉 This dramatically improves:
+
+Awareness without looking down
+Immersion
+“Oh crap” moments
+
+
+Small But Critical UX Detail
+
+When upgraded:
+
+You NEED clear feedback
+
+Otherwise players won’t realize what changed.
+
+Add one or more:
+🔥 Subtle lava particles while walking
+🔴 Tooltip:
+“Lava-Stable”
+“Molten Infused”
+✨ Slight glow/enchantment effect
+🔊 Different sound when stepping
+
+
+
+V1.1.0
+- add molten core item - or fragments
+- add crafting recipe for core -> boots - smithing table or instead of crafting, maybe stop durability loss when using
+- add core to bastion loot (chests only)
+- while walking in overworld, light grass (anything burnable and standing on) on fire
+- make fire protection easier to get on enchanting table
+
+misc
+- glow red in dark? or just in nether? or when near bastion?
+
+current features
+- fully configurable, commands and gui (op only)
+- walk on lava turning into temporary basalt blocks
+- boots only found in bastion treasure rooms: in an item frame on a block hanging from a chain
+- extra durability loss when lava blocks are cooled, item does not destroy goes to 1 and stop working (like elytra)
+- can be enchanted like regular boots, except no frost-walker

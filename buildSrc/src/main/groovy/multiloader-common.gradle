@@ -54,7 +54,13 @@ repositories {
         capability("$group:${project.name}:$version")
         capability("$group:${base.archivesName.get()}:$version")
         capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
-        capability("$group:$mod_id:$version")
+        if (project.name == 'common') {
+            capability("$group:$mod_id:$version")
+        }
+    }
+    def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+    configurations."$variant".attributes {
+        attribute(loaderAttribute, 'common')
     }
     publishing.publications.configureEach {
         suppressPomMetadataWarningsFor(variant)
@@ -100,6 +106,9 @@ processResources {
             'description'                  : project.description,
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range,
+            'dirigo_fabric_version_range'  : dirigo_fabric_version_range,
+            'dirigo_neoforge_version_range': dirigo_neoforge_version_range,
+            'cloth_config_version_range'   : cloth_config_version_range,
             'credits'                      : credits,
             'java_version'                 : java_version
     ]
