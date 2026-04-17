@@ -78,6 +78,8 @@ dependencies {
 
     // This resolves to Dirigo's neoforge module through the composite build in settings.gradle.
     implementation "io.drahlek:neoforge:1.0.0"
+    jarJar(implementation("org.reflections:reflections:0.10.2"))
+    jarJar(implementation("org.javassist:javassist:3.28.0-GA"))
 
     // This points to Dirigo's common module.
     implementation("io.drahlek:common:1.0.0") {
