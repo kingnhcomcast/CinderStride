@@ -13,6 +13,8 @@ import net.minecraft.commands.CommandSourceStack;
 // common compatible binaries. This means common code can not directly use loader specific concepts such as Forge events
 // however it will be compatible with all supported mod loaders.
 public class CinderStrideCommon {
+    private static final String ITEMS_PACKAGE = Constants.GROUP + ".items";
+    private static final String BLOCKS_PACKAGE = Constants.GROUP + ".blocks";
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some
@@ -20,8 +22,8 @@ public class CinderStrideCommon {
     public static void init() {
         Constants.LOG.info("{} Common Initialize", Constants.MOD_NAME);
         CinderStrideConfig.instance();
-        ItemRegistrar.registerItems(Constants.MOD_ID, Constants.GROUP);
-        BlockRegistrar.registerBlocks(Constants.MOD_ID, Constants.GROUP);
+        ItemRegistrar.registerItems(Constants.MOD_ID, ITEMS_PACKAGE);
+        BlockRegistrar.registerBlocks(Constants.MOD_ID, BLOCKS_PACKAGE);
         EventRegistrar.registerEvents(Constants.GROUP);
     }
 

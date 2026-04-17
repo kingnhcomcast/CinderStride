@@ -27,8 +27,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    // This resolves to Dirigo's fabric module through the composite build in settings.gradle.
-    modRuntimeOnly "io.drahlek:fabric:1.0.0"
+    // Keep Dirigo on runtime classpath without forcing Loom to parse its mod metadata at configuration time.
+    runtimeOnly "io.drahlek:fabric:1.0.0"
+    include(implementation("org.reflections:reflections:0.10.2"))
+    include(implementation("org.javassist:javassist:3.28.0-GA"))
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)

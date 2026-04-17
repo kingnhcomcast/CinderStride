@@ -1,4 +1,5 @@
 plugins {
+    id 'base'
     // see https://fabricmc.net/develop/ for new versions
     id 'fabric-loom' version '1.13-SNAPSHOT' apply false
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
@@ -15,4 +16,26 @@ subprojects {
         // This prevents the Javadoc tool from complaining about missing comments
         options.addStringOption('Xdoclint:none', '-quiet')
     }
+}
+
+def dirigoCleanTasks = [
+        gradle.includedBuild('Dirigo').task(':common:clean'),
+        gradle.includedBuild('Dirigo').task(':fabric:clean'),
+        gradle.includedBuild('Dirigo').task(':neoforge:clean')
+]
+
+def dirigoBuildTasks = [
+        gradle.includedBuild('Dirigo').task(':common:build'),
+        gradle.includedBuild('Dirigo').task(':fabric:build'),
+        gradle.includedBuild('Dirigo').task(':neoforge:build')
+]
+
+tasks.named('clean') {
+    dependsOn subprojects.collect { it.tasks.named('clean') }
+    dependsOn dirigoCleanTasks
+}
+
+tasks.named('build') {
+    dependsOn subprojects.collect { it.tasks.named('build') }
+    dependsOn dirigoBuildTasks
 }
