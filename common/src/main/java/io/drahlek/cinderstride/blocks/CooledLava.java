@@ -61,9 +61,9 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
-        if (level.getBlockState(pos).isAir()) {
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        if (!level.isClientSide() && !newState.is(this) && level.getBlockState(pos).isAir()) {
             level.setBlock(pos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
         }
     }

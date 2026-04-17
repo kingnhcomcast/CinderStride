@@ -28,7 +28,7 @@ public class EnchantmentHelperMixin {
             CallbackInfoReturnable<List<EnchantmentInstance>> cir
     ) {
         if (CinderStrideEnchantmentRules.isCinderStrideBoots(stack)) {
-            cir.getReturnValue().removeIf(instance -> CinderStrideEnchantmentRules.isFrostWalker(instance.enchantment()));
+            cir.getReturnValue().removeIf(instance -> CinderStrideEnchantmentRules.isFrostWalker(instance.enchantment));
         }
     }
 
