@@ -1,12 +1,10 @@
-# 🔥 CinderStride – Walk on Lava Boots
+# 🔥 CinderStride
 
-> **Walk on lava in Minecraft.**  
-> A vanilla-friendly mod that adds **lava-walking boots**, similar to **Frost Walker for lava**, found in Bastion treasure rooms.  
-> Cross Nether lava oceans by creating temporary basalt underfoot — but don’t stop moving.
+> **Walk on lava in Minecraft.** > A vanilla-friendly mod that adds **lava walking boots**, similar to **Frost Walker for lava**. Hidden in Bastions lies a relic that grants the power to walk on lava. With it, the Nether’s oceans become your highway.
 
 ---
 
-## ⚡ What This Adds
+## ⚡ Features
 
 * Walk across lava safely without bridges or fire resistance
 * Turn the Nether into a **traversable world**, not a barrier
@@ -17,7 +15,7 @@
 
 ---
 
-## 🌋 Why It Feels Vanilla
+## 🌋 Vanilla Design
 
 * Progression is tied to **exploration**, not free power
 * One focused mechanic with **high impact and low clutter**
@@ -27,7 +25,7 @@
 
 ---
 
-## 👢 Lava Walking Boots (Frost Walker for Lava)
+## 👢 The Boots
 
 * Found in **Bastion Remnant Treasure Rooms**, displayed on an **item frame (like Elytra)**
 * **Walk across lava safely**
@@ -38,11 +36,24 @@
 * Boots will not break, but can become unusable until repaired
 * Fully enchantable — **Mending** and **Unbreaking** recommended
 
-> ⚖️ Balanced for survival — limited durability, temporary terrain, and constant movement required.
+> ⚖️ Balanced for survival — limited durability and constant movement required.
 
 ---
 
-## 🧭 Exploration Loop
+**Lava Walk** ![Player walking across lava](https://cdn.modrinth.com/data/rZcOAbbe/images/cbfddac29c72ce3b5ce6d360f77c91c4e6dd1287.gif)
+
+**Bastion Treasure**
+<p align="center">
+  <img 
+    src="https://cdn.modrinth.com/data/rZcOAbbe/images/24569d4b313d2107348cab6026ed5c2609a914d2_350.webp" 
+    width="600"
+    alt="CinderStride boots in a Bastion treasure room"
+  >
+</p>
+
+---
+
+## 🧭 Gameplay
 
 * Venture deeper into the Nether to find Bastions
 * Locate the boots displayed within treasure rooms
@@ -51,7 +62,7 @@
 
 ---
 
-## 🎯 Perfect For
+## 🎯 Use Cases
 
 * Vanilla+ modpacks
 * Nether exploration overhauls
@@ -66,39 +77,27 @@
 * Suitable for singleplayer, multiplayer, and server administration
 
 <details>
-<summary><strong>🔧 Advanced Config & Commands (Click to Expand)</strong></summary>
+<summary><strong>🔧 Config & Commands</strong></summary>
 
 ### 📁 Config File
-
 `config/cinderstride/cinderstride.json`
 
-### 🧰 Config Options
-
-* `radius` (default: `1`, range: `1` to `4`)  
-  Horizontal radius around the player where lava is converted.
-* `decayTicks` (default: `40`, range: `20` to `120`)  
-  Time per decay stage (4 stages before lava returns).
-* `durabilityLossChance` (default: `0.25`, range: `0.0` to `1.0`)  
-  Chance per converted block to consume durability.
+### 🧰 Options
+* `radius` (default: `1`, range: `1` to `4`)
+* `decayTicks` (default: `40`, range: `20` to `120`)
+* `durabilityLossChance` (default: `0.25`, range: `0.0` to `1.0`)
 
 ### 💬 Commands
-
-All commands are under:
-
-`/cinderstride config ...`
-
-* `/cinderstride config show`
+`/cinderstride config show`
 * `/cinderstride config get <setting>`
 * `/cinderstride config set <setting> <value>`
 * `/cinderstride config reload`
 
 ### 🔐 Permissions
-
 * Requires operator/admin permissions
 * UI editing restricted to authorized players
 
 ### 🖥️ UI Support
-
 * Fabric: Mod Menu + Cloth Config
 * NeoForge: Cloth Config integration
 
@@ -110,51 +109,39 @@ All commands are under:
 
 * Works with **Fabric and NeoForge**
 * Compatible with most **vanilla+ modpacks**
-* Safe to add to existing worlds  
-  (appears in newly generated Bastions only)
+* Safe to add to existing worlds (newly generated Bastions only)
 * No worldgen conflicts outside Bastion loot
 
 ---
 
-## 🔮 Future Features
+## 🔮 Future Plans
 
+* Improved safety (magma blocks, vertical drops)
 * Upgrade path for CinderStride Boots
-* Integration with **HearthGuard** (enhanced campfire mechanics)
-* Potential integration with other survival mechanics and mods
-* Additional balancing and expansion based on gameplay feedback
+* Integration with **HearthGuard**
+* Custom sound effects
 
----
-
-## 📦 Installation
-
-1. Download the correct file for your mod loader and Minecraft version
-2. Place the `.jar` in your `mods` folder
-3. Launch Minecraft
-
----
 
 ## 📝 Changelog
 
-### 1.0.0
+1.0.0
 * Initial release
-* Added Bastion treasure room CinderStride Boots (item frame display)
-* Added lava-walking with temporary basalt decay
-* Added command and UI configuration support
+* Added Bastion boots, lava-walking, and config systems
 
----
 
-## ✅ Modpack Permission
+## ✅ Permissions
 
 You are allowed to include CinderStride in modpacks.
 
 ---
 
 ## 👤 Credits
-
 Created by Drahlek.
 
 ---
 
 ## 🔒 License
-
 MIT. See [LICENSE](LICENSE).
+
+
+
