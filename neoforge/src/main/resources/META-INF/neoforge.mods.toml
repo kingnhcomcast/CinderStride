@@ -35,7 +35,7 @@ license = "${license}" # Review your options at https://choosealicense.com/.
 [[dependencies.${mod_id}]]
     modId = "dirigo"
     type="required"
-    versionRange =  "[${dirigo_version},)"
+    versionRange =  "[${dirigo_min_version},${dirigo_max_version})"
     ordering = "NONE"
     side = "BOTH"
 

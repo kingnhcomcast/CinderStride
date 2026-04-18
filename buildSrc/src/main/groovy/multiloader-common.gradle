@@ -107,7 +107,8 @@ processResources {
             'description'                  : project.description,
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range,
-            'dirigo_version'               : dirigo_version,
+            'dirigo_min_version'           : dirigo_min_version,
+            'dirigo_max_version'           : dirigo_max_version,
             'credits'                      : credits,
             'java_version'                 : java_version
     ]

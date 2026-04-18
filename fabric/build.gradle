@@ -25,11 +25,11 @@ dependencies {
 
     // common is wired in via multiloader-loader with the correct attributes.
     // This resolves to Dirigo's fabric module through the composite build in settings.gradle.
-    developmentModImplementation "io.drahlek:fabric:${dirigo_version}"
+    developmentModImplementation "io.drahlek:fabric:${dirigo_min_version}"
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-    implementation("io.drahlek:common:${dirigo_version}") {
+    implementation("io.drahlek:common:${dirigo_min_version}") {
         attributes {
             attribute(loaderAttribute, 'common')
         }
