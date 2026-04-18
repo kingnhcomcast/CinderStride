@@ -1,6 +1,5 @@
 plugins {
     id 'multiloader-loader'
-    id 'multiloader-fabric-composite'
     id 'fabric-loom'
 }
 
@@ -16,6 +15,10 @@ configurations {
     commonClientJava {
         canBeResolved = true
     }
+    fabricRunModCandidates {
+        canBeResolved = true
+        canBeConsumed = false
+    }
 }
 
 dependencies {
@@ -27,8 +30,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    // This resolves to Dirigo's fabric module through the composite build in settings.gradle.
-    modRuntimeOnly "io.drahlek:fabric:${dirigo_version}"
+    fabricRunModCandidates("net.fabricmc:fabric-loader:${fabric_loader_version}") {
+        transitive = false
+    }
+    fabricRunModCandidates("net.fabricmc.fabric-api:fabric-api:${fabric_version}") {
+        transitive = false
+    }
     include(implementation("org.reflections:reflections:0.10.2"))
     include(implementation("org.javassist:javassist:3.28.0-GA"))
 
@@ -74,6 +81,23 @@ loom {
             ideConfigGenerated(true)
             runDir('runs/server')
         }
+    }
+}
+
+def dirigoFabricJar = rootProject.file("../Dirigo/fabric/build/libs/dirigo-fabric-${minecraft_version}-${dirigo_version}.jar")
+def dirigoFabricRemapJar = gradle.includedBuild('Dirigo').task(':fabric:remapJar')
+
+tasks.named('runClient') {
+    dependsOn(dirigoFabricRemapJar)
+    doFirst {
+        systemProperty('fabric.addMods', ([dirigoFabricJar.absolutePath] + configurations.fabricRunModCandidates.files.collect { it.absolutePath }).join(File.pathSeparator))
+    }
+}
+
+tasks.named('runServer') {
+    dependsOn(dirigoFabricRemapJar)
+    doFirst {
+        systemProperty('fabric.addMods', ([dirigoFabricJar.absolutePath] + configurations.fabricRunModCandidates.files.collect { it.absolutePath }).join(File.pathSeparator))
     }
 }
 
