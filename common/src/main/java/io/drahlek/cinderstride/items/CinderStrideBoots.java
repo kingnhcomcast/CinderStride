@@ -79,7 +79,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
             return;
         }
 
-        //get blocks at same Y level within radius that are lava
+        //get blocks at same Y level and 1 below within radius that are lava
         List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, config.getRadius());
         if (lavaBlocks.isEmpty()) {
             return;
@@ -95,15 +95,22 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         BlockPos center = player.getOnPos();
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                BlockPos pos = center.offset(x, 0, z);
-                BlockState state = player.level().getBlockState(pos);
+                for(int y = -1; y <= 0; y++) {
+                    BlockPos pos = center.offset(x, y, z);
+                    BlockState state = player.level().getBlockState(pos);
 
-                if ((state.is(Blocks.LAVA) && state.getValue(LiquidBlock.LEVEL) == 0) ||
-                     state.is(BlockRegistrar.blocks.get(CooledLava.NAME).get()))   {
-                    lavaBlocks.add(pos);
+                    if ((state.is(Blocks.LAVA) && state.getValue(LiquidBlock.LEVEL) == 0) ||
+                            state.is(BlockRegistrar.blocks.get(CooledLava.NAME).get())) {
+                        //only cool if block above is air
+                        BlockState stateAbove = player.level().getBlockState(pos.above());
+                        if(stateAbove.isAir()) {
+                            lavaBlocks.add(pos);
+                        }
+                    }
                 }
             }
         }
+
         return lavaBlocks;
     }
 
