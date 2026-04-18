@@ -74,11 +74,6 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         if(bootStack == null)
             return;
 
-        //check if player is on ground
-        if(!player.onGround()) {
-            return;
-        }
-
         //get blocks at same Y level and 1 below within radius that are lava
         List<BlockPos> lavaBlocks = getLavaBlocksWithinRadius(player, config.getRadius());
         if (lavaBlocks.isEmpty()) {
@@ -87,7 +82,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
 
         Constants.LOG.debug("Cooling {} lava source blocks near {} at {}", lavaBlocks.size(), player.getName().getString(), event.getNewPos());
 
-       coolBlocks(lavaBlocks, player, bootStack);
+        coolBlocks(lavaBlocks, player, bootStack);
     }
 
     private static List<BlockPos> getLavaBlocksWithinRadius(Player player, int radius) {

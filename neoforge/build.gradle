@@ -77,10 +77,10 @@ dependencies {
     commonClientResources project(path: ':common', configuration: 'commonClientResources')
 
     // This resolves to Dirigo's neoforge module through the composite build in settings.gradle.
-    implementation "io.drahlek:neoforge:1.0.0"
+    implementation "io.drahlek:neoforge:${dirigo_version}"
 
     // This points to Dirigo's common module.
-    implementation("io.drahlek:common:1.0.0") {
+    implementation("io.drahlek:common:${dirigo_version}") {
         attributes {
             attribute(loaderAttribute, 'common')
         }
