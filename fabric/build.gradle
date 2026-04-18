@@ -18,10 +18,6 @@ configurations {
     }
 }
 
-def dirigoFabricJar = rootProject.file("../Dirigo/fabric/build/libs/dirigo-fabric-${minecraft_version}-${dirigo_version}.jar")
-def dirigoFabricRuntime = files(dirigoFabricJar)
-dirigoFabricRuntime.builtBy gradle.includedBuild('Dirigo').task(':fabric:remapJar')
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered {
@@ -30,11 +26,9 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    developmentModRuntimeOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    developmentModRuntimeOnly "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    // Keep Dirigo off the composite project runtime classpath while Loom creates run tasks.
-    developmentModRuntimeOnly dirigoFabricRuntime
+    // This resolves to Dirigo's fabric module through the composite build in settings.gradle.
+    modRuntimeOnly "io.drahlek:fabric:${dirigo_version}"
     include(implementation("org.reflections:reflections:0.10.2"))
     include(implementation("org.javassist:javassist:3.28.0-GA"))
 
