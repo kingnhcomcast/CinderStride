@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": "cinderstride:cinder_shard"
+  },
+  "result": {
+    "id": "cinderstride:cinder_core"
+  }
+}
