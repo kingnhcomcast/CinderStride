@@ -27,10 +27,16 @@ V1.1.0
 * cool lava below so you can step down
 * cool lava when fall into pool (still take fall dmg)
 * cooling/reverting sounds
-- add fragments, 4 fragments = 1 core
-- combine boots + core on smithing table = no durability loss
+* add fragments, 4 fragments = 1 core
+- upgrade boots = no durability loss
+    - cinder template: found in bastion loot
+    * smithing table: cinder template + core  + boots = upgraded boots
+    * cinder template + 7 Gilded Blackstone + magma creams = 2 cinder templates
 - add fragments to bastion loot (chests only)
 - make fire protection easier to get on enchanting table
+- repair boots with fragments - better than netherite
+- fix this: Missing block model: cinderstride:block/cooled_lava
+- bug: should fall into lava when block below goes to lava
 
 misc
 - glow red in dark? or just in nether? or when near bastion?
@@ -108,5 +114,14 @@ Add one or more:
 
 
 
+🧠 Small but powerful idea
+Piglin interaction
 
+Let Piglins:
+
+react to cores
+trade for rare items
+become hostile if you hold one
+
+👉 Makes Bastions feel alive again after first visit
 

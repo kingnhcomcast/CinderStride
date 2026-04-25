@@ -62,6 +62,8 @@ loom {
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
             runDir('runs/client')
+            programArgs '--username', 'CinderDev'
+            programArgs '--uuid', '00000000-0000-0000-0000-000000000001'
         }
         server {
             server()

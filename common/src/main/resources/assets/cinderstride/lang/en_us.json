@@ -1,5 +1,23 @@
 {
   "item.cinderstride.cinder_stride_boots": "CinderStride Boots",
+  "item.cinderstride.cinder_shard": "Cinder Shard",
+  "item.cinderstride.cinder_core": "Cinder Core",
+  "item.cinderstride.cinder_template": "Cinder Smithing Template",
+
   "itemTooltip.cinderstride.cinder_stride_boots": "A relic pried from the heart of a Bastion.",
-  "block.cinderstride.cooled_lava": "Cooled Lava"
+
+  "block.cinderstride.cooled_lava": "Cooled Lava",
+
+  "item.cinderstride.cinder_template.applies_to": "Applies to: CinderStride Boots",
+  "item.cinderstride.cinder_template.ingredients": "Ingredients: Cindercore",
+  "item.cinderstride.cinder_template.base_slot_description": "Add CinderStride Boots",
+  "item.cinderstride.cinder_template.additions_slot_description": "Add a Cindercore",
+  "item.cinderstride.cinder_template.description": "Infuses CinderStride Boots, removing lava-walking durability loss.",
+
+  "tooltip.cinderstride.cindercore": "A condensed ember relic recovered from the Bastion's depths.",
+  "tooltip.cinderstride.cinder_shard": "A fragment of a greater Nether relic.",
+  "tooltip.cinderstride.cinderboots.base": "Cools lava beneath your step, but wears down with use.",
+  "tooltip.cinderstride.cinderboots.upgraded": "Upgraded: no durability is consumed while cooling lava."
+
+
 }

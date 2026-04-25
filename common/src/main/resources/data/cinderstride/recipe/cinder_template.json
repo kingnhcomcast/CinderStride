@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MTM",
+    "MGM",
+    "MMM"
+  ],
+  "key": {
+    "M": "minecraft:magma_cream",
+    "T": "cinderstride:cinder_template",
+    "G": "minecraft:gilded_blackstone"
+  },
+  "result": {
+    "id": "cinderstride:cinder_template",
+    "count": 2
+  }
+}

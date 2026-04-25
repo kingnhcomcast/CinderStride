@@ -3,10 +3,11 @@ package io.drahlek.cinderstride.items;
 import io.drahlek.cinderstride.Constants;
 import io.drahlek.cinderstride.blocks.CooledLava;
 import io.drahlek.cinderstride.config.CinderStrideConfig;
+import io.drahlek.cinderstride.datacomponents.CinderStrideDataComponents;
 import io.drahlek.dirigo.annotation.EventSubscriber;
 import io.drahlek.dirigo.annotation.Item;
-import io.drahlek.dirigo.registrars.BlockRegistrar;
 import io.drahlek.dirigo.event.PlayerMovedEvent;
+import io.drahlek.dirigo.registrars.BlockRegistrar;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -57,7 +57,10 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     //TODO see https://wiki.fabricmc.net/tutorial:tooltip
     @Override
     public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay displayComponent, Consumer<Component> textConsumer, @NonNull TooltipFlag type) {
-        textConsumer.accept(Component.translatable("itemTooltip.cinderstride." + NAME).withStyle(ChatFormatting.RED));
+        String key = isUpgraded(stack)
+                ? "tooltip.cinderstride.cinderboots.upgraded"
+                : "tooltip.cinderstride.cinderboots.base";
+        textConsumer.accept(Component.translatable(key).withStyle(ChatFormatting.RED));
     }
 
     @EventSubscriber(PlayerMovedEvent.class)
@@ -139,15 +142,21 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
             //transform to cooled_lava
             player.level().setBlock(blockPos, stageZero, UPDATE_ALL);
 
-            //cause durability loss
-            float durabilityLossChance = CinderStrideConfig.data().getDurabilityLossChance();
-            if (player.getRandom().nextFloat() < durabilityLossChance) {
-                bootStack.hurtAndBreak(1, player, EquipmentSlot.FEET);
+            // Upgraded boots do not lose durability while cooling lava.
+            if (!isUpgraded(bootStack)) {
+                float durabilityLossChance = CinderStrideConfig.data().getDurabilityLossChance();
+                if (player.getRandom().nextFloat() < durabilityLossChance) {
+                    bootStack.hurtAndBreak(1, player, EquipmentSlot.FEET);
+                }
             }
         }
     }
 
     private static boolean canCoolLava(ItemStack bootStack) {
         return bootStack.getMaxDamage() - bootStack.getDamageValue() > 1;
+    }
+
+    private static boolean isUpgraded(ItemStack bootStack) {
+        return Boolean.TRUE.equals(bootStack.get(CinderStrideDataComponents.UPGRADED));
     }
 }
