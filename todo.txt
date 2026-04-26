@@ -28,19 +28,23 @@ V1.1.0
 * cool lava when fall into pool (still take fall dmg)
 * cooling/reverting sounds
 * add fragments, 4 fragments = 1 core
-- upgrade boots = no durability loss
-    - cinder template: found in bastion loot
+* upgrade boots = no durability loss
+    * cinder template: found in bastion loot
     * smithing table: cinder template + core  + boots = upgraded boots
-    * cinder template + 7 Gilded Blackstone + magma creams = 2 cinder templates
-- add fragments to bastion loot (chests only)
+    * cinder template + 1 Gilded Blackstone + 7 magma creams = 2 cinder templates
+* add fragments to bastion loot (chests only)
 - make fire protection easier to get on enchanting table
 * repair boots with fragments - better than netherite
 - fix this: Missing block model: cinderstride:block/cooled_lava
 - bug: should fall into lava when block below goes to lava
-- right click shard on campfire to make hearthfire
+- hearthfire
+    - right click campfire creates hearthfire
     - double the light
     - different color smoke
     - cooks meat 2x fast
+ - fix creative tab entries
+ - shards and cores should also be immune to fire/lava
+ - dont take dmg when walking on magma blocks
 
 misc
 - glow red in dark? or just in nether? or when near bastion?

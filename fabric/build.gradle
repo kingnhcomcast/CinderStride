@@ -47,7 +47,9 @@ loom {
 
     mods {
         "${mod_id}" {
+            sourceSet project(":common").sourceSets.main
             sourceSet sourceSets.main
+            sourceSet project(":common").sourceSets.client
             sourceSet sourceSets.client
         }
     }
