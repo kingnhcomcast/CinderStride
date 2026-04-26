@@ -10,9 +10,11 @@ import io.drahlek.dirigo.event.PlayerMovedEvent;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +38,10 @@ import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 @Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_stride_boots";
+    private static final TagKey<net.minecraft.world.item.Item> REPAIR_MATERIALS = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(Constants.MOD_ID, "cinder_stride_boots_repair_materials")
+    );
 
     public CinderStrideBoots(Properties properties) {
         super(properties
@@ -51,6 +57,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
                         ArmorMaterials.NETHERITE.repairIngredient(),
                         ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, NAME))
                 ), ArmorType.BOOTS)
+                .repairable(REPAIR_MATERIALS)
                 .durability(ArmorType.BOOTS.getDurability(ArmorMaterials.NETHERITE.durability())));
     }
 
