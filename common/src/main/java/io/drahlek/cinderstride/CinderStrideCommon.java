@@ -1,6 +1,7 @@
 package io.drahlek.cinderstride;
 
 import com.mojang.brigadier.CommandDispatcher;
+import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
 import io.drahlek.dirigo.registrars.CommandRegistrar;
 import io.drahlek.dirigo.registrars.DataComponentRegistrar;
@@ -22,6 +23,7 @@ public class CinderStrideCommon {
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
         Constants.LOG.info("{} Common Initialize", Constants.MOD_NAME);
+        CinderStrideConfig.instance();
         ItemRegistrar.registerItems(Constants.MOD_ID, ITEMS_PACKAGE);
         BlockRegistrar.registerBlocks(Constants.MOD_ID, BLOCKS_PACKAGE);
         EventRegistrar.registerEvents(Constants.GROUP);

@@ -108,7 +108,7 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
                             state.is(BlockRegistrar.blocks.get(CooledLava.NAME).get())) {
                         //only cool if block above is air
                         BlockState stateAbove = player.level().getBlockState(pos.above());
-                        if(stateAbove.isAir()) {
+                        if (stateAbove.isAir() && isAtOrAboveSurface(player, pos)) {
                             lavaBlocks.add(pos);
                         }
                     }
@@ -119,6 +119,9 @@ public class CinderStrideBoots extends net.minecraft.world.item.Item  {
         return lavaBlocks;
     }
 
+    private static boolean isAtOrAboveSurface(Player player, BlockPos pos) {
+        return player.getY() >= pos.getY() + 1.0D - 1.0E-3D;
+    }
 
     private static ItemStack getBoots(Player player) {
         ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
