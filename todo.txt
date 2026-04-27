@@ -36,7 +36,7 @@ V1.1.0
 * repair boots with fragments - better than netherite
 * dont take dmg when walking on magma blocks
 * shards and cores should also be immune to fire/lava
-- fix this: Missing block model: cinderstride:block/cooled_lava
+* fix this: Missing block model: cinderstride:block/cooled_lava
 - bug: should fall into lava when block below goes to lava
 - fix creative tab entries
 - hearthfire
