@@ -7,7 +7,8 @@
     "AnvilMenuMixin",
     "EnchantCommandMixin",
     "EnchantmentHelperMixin",
-    "ItemCombinerMenuAccessor"
+    "ItemCombinerMenuAccessor",
+    "MagmaBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
