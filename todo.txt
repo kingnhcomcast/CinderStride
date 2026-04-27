@@ -33,18 +33,18 @@ V1.1.0
     * smithing table: cinder template + core  + boots = upgraded boots
     * cinder template + 1 Gilded Blackstone + 7 magma creams = 2 cinder templates
 * add fragments to bastion loot (chests only)
-- make fire protection easier to get on enchanting table
 * repair boots with fragments - better than netherite
+* dont take dmg when walking on magma blocks
+* shards and cores should also be immune to fire/lava
 - fix this: Missing block model: cinderstride:block/cooled_lava
 - bug: should fall into lava when block below goes to lava
+- fix creative tab entries
 - hearthfire
     - right click campfire creates hearthfire
     - double the light
     - different color smoke
     - cooks meat 2x fast
- - fix creative tab entries
- - shards and cores should also be immune to fire/lava
- * dont take dmg when walking on magma blocks
+- make fire protection easier to get on enchanting table
 
 misc
 - glow red in dark? or just in nether? or when near bastion?

@@ -7,6 +7,6 @@ public class CinderCore extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_core";
 
     public CinderCore(Properties properties) {
-        super(properties);
+        super(properties.fireResistant());
     }
 }
