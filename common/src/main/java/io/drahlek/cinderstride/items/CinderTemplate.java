@@ -9,7 +9,7 @@ import net.minecraft.world.item.SmithingTemplateItem;
 
 import java.util.List;
 
-@Item(id = "cinder_template")
+@Item(id = "cinder_template", creativeTab = "ingredients")
 public class CinderTemplate extends SmithingTemplateItem {
     public static final String NAME = "cinder_template";
 

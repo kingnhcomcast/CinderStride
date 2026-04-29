@@ -38,7 +38,7 @@ V1.1.0
 * shards and cores should also be immune to fire/lava
 * fix this: Missing block model: cinderstride:block/cooled_lava
 * bug: should fall into lava when block below goes to lava
-- fix creative tab entries
+* fix creative tab entries
 - hearthfire
     - right click campfire creates hearthfire
     - double the light

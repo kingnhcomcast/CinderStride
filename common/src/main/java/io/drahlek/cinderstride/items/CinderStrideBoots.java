@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 
-@Item(id = "cinder_stride_boots"/*, creativeTab = "minecraft:combat"*/)
+@Item(id = "cinder_stride_boots", creativeTab = "combat")
 public class CinderStrideBoots extends net.minecraft.world.item.Item  {
     static public final String NAME = "cinder_stride_boots";
     private static final TagKey<net.minecraft.world.item.Item> REPAIR_MATERIALS = TagKey.create(
