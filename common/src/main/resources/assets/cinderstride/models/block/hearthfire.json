@@ -1,0 +1,7 @@
+{
+  "parent": "cinderstride:block/template_hearthfire",
+  "textures": {
+    "fire": "cinderstride:block/hearthfire_fire",
+    "lit_log": "minecraft:block/campfire_log_lit"
+  }
+}

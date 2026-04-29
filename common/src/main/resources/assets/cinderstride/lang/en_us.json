@@ -17,7 +17,9 @@
   "tooltip.cinderstride.cindercore": "A condensed ember relic recovered from the Bastion's depths.",
   "tooltip.cinderstride.cinder_shard": "A fragment of a greater Nether relic.",
   "tooltip.cinderstride.cinderboots.base": "Cools lava beneath your step, but wears down with use.",
-  "tooltip.cinderstride.cinderboots.upgraded": "Upgraded: no durability is consumed while cooling lava."
+  "tooltip.cinderstride.cinderboots.upgraded": "Upgraded: no durability is consumed while cooling lava.",
+
+  "block.cinderstride.hearthfire": "Hearthfire"
 
 
 }

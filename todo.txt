@@ -39,15 +39,15 @@ V1.1.0
 * fix this: Missing block model: cinderstride:block/cooled_lava
 * bug: should fall into lava when block below goes to lava
 * fix creative tab entries
-- hearthfire
-    - right click campfire creates hearthfire
-    - double the light
-    - different color smoke
-    - cooks meat 2x fast
-- make fire protection easier to get on enchanting table
+* hearthfire
+    * right click campfire creates hearthfire
+    * hotter looking visuals/particles
+    * cooks meat 2x fast
 
-misc
+future
 - glow red in dark? or just in nether? or when near bastion?
+- make fire protection easier to get on enchanting table
+- repair boots by placing on hearthfire
 
 
 nice to have
