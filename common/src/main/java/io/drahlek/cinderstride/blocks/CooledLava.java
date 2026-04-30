@@ -4,6 +4,8 @@ import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.annotation.Block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -41,23 +43,56 @@ public class CooledLava extends net.minecraft.world.level.block.Block {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (!level.isClientSide() && !oldState.is(this)) {
             level.scheduleTick(pos, this, getDecayDelay(level));
+            level.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F,  0.9F + level.getRandom().nextFloat() * 0.2F);
         }
+
     }
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!state.is(this)) {
-            return;
-        }
+        if (!level.isClientSide()) {
+            if (!state.is(this)) {
+                return;
+            }
 
-        int stage = state.getValue(STAGE);
-        if (stage >= 3) {
-            level.setBlock(pos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
-            return;
-        }
+            int stage = state.getValue(STAGE);
+            playSound(level, pos, stage);
+            if (stage >= 3) {
+                level.setBlock(pos, Blocks.LAVA.defaultBlockState(), UPDATE_ALL);
+                return;
+            }
 
-        level.setBlock(pos, state.setValue(STAGE, stage + 1), UPDATE_ALL);
-        level.scheduleTick(pos, this, getDecayDelay(level));
+            level.setBlock(pos, state.setValue(STAGE, stage + 1), UPDATE_ALL);
+            level.scheduleTick(pos, this, getDecayDelay(level));
+        }
+    }
+
+    private static void playSound(ServerLevel level, BlockPos pos, int stage) {
+        switch (stage) {
+            case 0:
+                level.playSound(null, pos, SoundEvents.BASALT_HIT,
+                        SoundSource.BLOCKS, 0.45f,
+                        0.75F + level.getRandom().nextFloat() * 0.15F);
+                break;
+
+            case 1:
+                level.playSound(null, pos, SoundEvents.BASALT_BREAK,
+                        SoundSource.BLOCKS, 0.65f,
+                        0.85F + level.getRandom().nextFloat() * 0.15F);
+                break;
+
+            case 2:
+                level.playSound(null, pos, SoundEvents.NETHER_BRICKS_HIT,
+                        SoundSource.BLOCKS, 0.85f,
+                        0.95F + level.getRandom().nextFloat() * 0.25F);
+                break;
+
+            case 3:
+                level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE,
+                        SoundSource.BLOCKS, 1.1f,
+                        0.85F + level.getRandom().nextFloat() * 0.15F);
+                break;
+        }
     }
 
     @Override

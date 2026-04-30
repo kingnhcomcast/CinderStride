@@ -18,24 +18,30 @@ subprojects {
     }
 }
 
-def dirigoCleanTasks = [
-        gradle.includedBuild('Dirigo').task(':common:clean'),
-        gradle.includedBuild('Dirigo').task(':fabric:clean'),
-        gradle.includedBuild('Dirigo').task(':neoforge:clean')
-]
+def subprojectLifecycleTasks = { String taskName ->
+    subprojects.collect { "${it.path}:${taskName}" }
+}
 
-def dirigoBuildTasks = [
-        gradle.includedBuild('Dirigo').task(':common:build'),
-        gradle.includedBuild('Dirigo').task(':fabric:build'),
-        gradle.includedBuild('Dirigo').task(':neoforge:build')
-]
+tasks.named('assemble') {
+    description = 'Assembles all CinderStride subprojects and the included Dirigo build.'
+    dependsOn(subprojectLifecycleTasks('assemble'))
+    dependsOn(gradle.includedBuild('Dirigo').task(':assemble'))
+}
 
-tasks.named('clean') {
-    dependsOn subprojects.collect { it.tasks.named('clean') }
-    dependsOn dirigoCleanTasks
+tasks.named('check') {
+    description = 'Runs checks for all CinderStride subprojects and the included Dirigo build.'
+    dependsOn(subprojectLifecycleTasks('check'))
+    dependsOn(gradle.includedBuild('Dirigo').task(':check'))
 }
 
 tasks.named('build') {
-    dependsOn subprojects.collect { it.tasks.named('build') }
-    dependsOn dirigoBuildTasks
+    description = 'Builds all CinderStride subprojects and the included Dirigo build.'
+    dependsOn(subprojectLifecycleTasks('build'))
+    dependsOn(gradle.includedBuild('Dirigo').task(':build'))
+}
+
+tasks.named('clean') {
+    description = 'Cleans all CinderStride subprojects and the included Dirigo build.'
+    dependsOn(subprojectLifecycleTasks('clean'))
+    dependsOn(gradle.includedBuild('Dirigo').task(':clean'))
 }

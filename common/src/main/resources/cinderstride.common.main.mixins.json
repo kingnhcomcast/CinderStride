@@ -5,9 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AnvilMenuMixin",
+    "CampfireBlockEntityAccessor",
+    "CampfireBlockEntityMixin",
     "EnchantCommandMixin",
     "EnchantmentHelperMixin",
-    "ItemCombinerMenuAccessor"
+    "ItemCombinerMenuAccessor",
+    "MagmaBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
