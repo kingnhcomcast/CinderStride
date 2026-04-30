@@ -23,13 +23,35 @@ V1.0.0
 * mod description (shows in mod menu)
 
 
+V1.1.0
+* cool lava below so you can step down
+* cool lava when fall into pool (still take fall dmg)
+* cooling/reverting sounds
+* add fragments, 4 fragments = 1 core
+* upgrade boots = no durability loss
+    * cinder template: found in bastion loot
+    * smithing table: cinder template + core  + boots = upgraded boots
+    * cinder template + 1 Gilded Blackstone + 7 magma creams = 2 cinder templates
+* add fragments to bastion loot (chests only)
+* repair boots with fragments - better than netherite
+* dont take dmg when walking on magma blocks
+* shards and cores should also be immune to fire/lava
+* fix this: Missing block model: cinderstride:block/cooled_lava
+* bug: should fall into lava when block below goes to lava
+* fix creative tab entries
+* hearthfire
+    * right click campfire creates hearthfire
+    * hotter looking visuals/particles
+    * cooks meat 2x fast
+
+future
+- glow red in dark? or just in nether? or when near bastion?
+- make fire protection easier to get on enchanting table
+- repair boots by placing on hearthfire
+
 
 nice to have
-- make items creative tab dynamic, currently hardcoded in dirigo to COMBAT
 - optimize: register event only (only do check) when wearing boots
-- CinderStrideConfig can be made fully generic
-
-
 
 
 
@@ -96,19 +118,14 @@ Add one or more:
 
 
 
-V1.1.0
-- add molten core item - or fragments
-- add crafting recipe for core -> boots - smithing table or instead of crafting, maybe stop durability loss when using
-- add core to bastion loot (chests only)
-- while walking in overworld, light grass (anything burnable and standing on) on fire
-- make fire protection easier to get on enchanting table
+🧠 Small but powerful idea
+Piglin interaction
 
-misc
-- glow red in dark? or just in nether? or when near bastion?
+Let Piglins:
 
-current features
-- fully configurable, commands and gui (op only)
-- walk on lava turning into temporary basalt blocks
-- boots only found in bastion treasure rooms: in an item frame on a block hanging from a chain
-- extra durability loss when lava blocks are cooled, item does not destroy goes to 1 and stop working (like elytra)
-- can be enchanted like regular boots, except no frost-walker
+react to cores
+trade for rare items
+become hostile if you hold one
+
+👉 Makes Bastions feel alive again after first visit
+

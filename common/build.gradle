@@ -55,7 +55,7 @@ dependencies {
     compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
     annotationProcessor "io.github.llamalad7:mixinextras-common:0.3.5"
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-    api("io.drahlek:common:1.0.0") {
+    api("io.drahlek:common:${dirigo_min_version}") {
         attributes {
             attribute(loaderAttribute, 'common')
         }

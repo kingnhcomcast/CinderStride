@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import io.drahlek.cinderstride.config.CinderStrideConfig;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
 import io.drahlek.dirigo.registrars.CommandRegistrar;
+import io.drahlek.dirigo.registrars.DataComponentRegistrar;
 import io.drahlek.dirigo.registrars.EventRegistrar;
 import io.drahlek.dirigo.registrars.ItemRegistrar;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,6 +16,7 @@ import net.minecraft.commands.CommandSourceStack;
 public class CinderStrideCommon {
     private static final String ITEMS_PACKAGE = Constants.GROUP + ".items";
     private static final String BLOCKS_PACKAGE = Constants.GROUP + ".blocks";
+    private static final String DATA_COMPONENTS_PACKAGE = Constants.GROUP + ".datacomponents";
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some
@@ -25,6 +27,7 @@ public class CinderStrideCommon {
         ItemRegistrar.registerItems(Constants.MOD_ID, ITEMS_PACKAGE);
         BlockRegistrar.registerBlocks(Constants.MOD_ID, BLOCKS_PACKAGE);
         EventRegistrar.registerEvents(Constants.GROUP);
+        DataComponentRegistrar.registerDataComponents(Constants.MOD_ID, DATA_COMPONENTS_PACKAGE);
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {

@@ -1,6 +1,8 @@
 package io.drahlek.cinderstride.mixin;
 
 import io.drahlek.cinderstride.enchantments.CinderStrideEnchantmentRules;
+import io.drahlek.cinderstride.items.CinderShard;
+import io.drahlek.cinderstride.items.CinderStrideBoots;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.AnvilMenu;
@@ -10,17 +12,19 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-// Stops ability to combine boots with FrostWalker enchant book in an anvil
 @Mixin(AnvilMenu.class)
 public abstract class AnvilMenuMixin {
     @Shadow
     @Final
     private DataSlot cost;
 
+    // Stops ability to combine boots with FrostWalker enchant book in an anvil
     @Inject(method = "createResult", at = @At("HEAD"), cancellable = true)
     private void cinderstride$blockFrostWalkerBookOnCinderStrideBoots(CallbackInfo ci) {
         ItemCombinerMenuAccessor combiner = (ItemCombinerMenuAccessor) this;
@@ -34,5 +38,33 @@ public abstract class AnvilMenuMixin {
             ((AbstractContainerMenu) (Object) this).broadcastChanges();
             ci.cancel();
         }
+    }
+
+    @ModifyConstant(
+            method = {"createResultInternal", "createResult"},
+            constant = @Constant(intValue = 4, ordinal = 0),
+            require = 0
+    )
+    private int cinderstride$boostFirstShardRepairStep(int vanillaDivisor) {
+        return cinderstride$usingCinderShardRepair() ? 2 : vanillaDivisor;
+    }
+
+    @ModifyConstant(
+            method = {"createResultInternal", "createResult"},
+            constant = @Constant(intValue = 4, ordinal = 1),
+            require = 0
+    )
+    private int cinderstride$boostRepeatedShardRepairStep(int vanillaDivisor) {
+        return cinderstride$usingCinderShardRepair() ? 2 : vanillaDivisor;
+    }
+
+    private boolean cinderstride$usingCinderShardRepair() {
+        ItemCombinerMenuAccessor combiner = (ItemCombinerMenuAccessor) this;
+        Container inputSlots = combiner.cinderstride$getInputSlots();
+        ItemStack target = inputSlots.getItem(AnvilMenu.INPUT_SLOT);
+        ItemStack source = inputSlots.getItem(AnvilMenu.ADDITIONAL_SLOT);
+
+        return target.getItem() instanceof CinderStrideBoots
+                && source.getItem() instanceof CinderShard;
     }
 }

@@ -96,7 +96,8 @@ processResources {
             'version'                      : version,
             'group'                        : project.group, //Else we target the task's group.
             'minecraft_version'            : minecraft_version,
-            'minecraft_version_range'      : minecraft_version_range,
+            'minecraft_version_range_neoforge': minecraft_version_range_neoforge,
+            'minecraft_version_range_fabric': minecraft_version_range_fabric,
             'fabric_version'               : fabric_version,
             'fabric_loader_version'        : fabric_loader_version,
             'mod_name'                     : mod_name,
@@ -106,9 +107,8 @@ processResources {
             'description'                  : project.description,
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range,
-            'dirigo_fabric_version_range'  : dirigo_fabric_version_range,
-            'dirigo_neoforge_version_range': dirigo_neoforge_version_range,
-            'cloth_config_version_range'   : cloth_config_version_range,
+            'dirigo_min_version'           : dirigo_min_version,
+            'dirigo_max_version'           : dirigo_max_version,
             'credits'                      : credits,
             'java_version'                 : java_version
     ]

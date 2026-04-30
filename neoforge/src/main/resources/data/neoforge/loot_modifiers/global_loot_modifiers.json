@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "entries": [
+    "cinderstride:bastion_bridge_shards",
+    "cinderstride:bastion_hoglin_stable_shards",
+    "cinderstride:bastion_treasure_shards",
+    "cinderstride:bastion_treasure_template"
+  ]
+}

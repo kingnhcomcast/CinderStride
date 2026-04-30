@@ -9,6 +9,11 @@ repositories {
     maven { url "https://maven.nucleoid.xyz/" }
 }
 
+def dirigoFabricDevJar = files(rootProject.file("../Dirigo/fabric/build/devlibs/dirigo-fabric-${minecraft_version}-${dirigo_min_version}-dev.jar")).builtBy(
+        gradle.includedBuild('Dirigo').task(':fabric:jar')
+)
+def dirigoReflectionsVersion = "0.10.2"
+
 configurations {
     commonClientResources {
         canBeResolved = true
@@ -27,19 +32,24 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    // Keep Dirigo on runtime classpath without forcing Loom to parse its mod metadata at configuration time.
-    runtimeOnly "io.drahlek:fabric:1.0.0"
-    include(implementation("org.reflections:reflections:0.10.2"))
-    include(implementation("org.javassist:javassist:3.28.0-GA"))
+    // Keep the older 1.21.11 compile path, but use Dirigo's named dev jar at runtime so
+    // Fabric does not boot against the intermediary runtime artifact.
+    modRuntimeOnly(dirigoFabricDevJar)
+    runtimeOnly "org.reflections:reflections:${dirigoReflectionsVersion}"
+    runtimeOnly "org.javassist:javassist:3.28.0-GA"
+    runtimeOnly "com.google.code.findbugs:jsr305:3.0.2"
 
     // This points to Dirigo's common module
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-    implementation("io.drahlek:common:1.0.0") {
+    implementation("io.drahlek:common:${dirigo_min_version}") {
         attributes {
             attribute(loaderAttribute, 'common')
         }
     }
 
+    compileOnly "org.spongepowered:mixin:0.8.5"
+    compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:0.3.5"
     compileOnly "org.projectlombok:lombok:1.18.44"
     annotationProcessor "org.projectlombok:lombok:1.18.44"
 
@@ -52,7 +62,9 @@ loom {
 
     mods {
         "${mod_id}" {
+            sourceSet project(":common").sourceSets.main
             sourceSet sourceSets.main
+            sourceSet project(":common").sourceSets.client
             sourceSet sourceSets.client
         }
     }
@@ -67,6 +79,8 @@ loom {
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
             runDir('runs/client')
+            programArgs '--username', 'CinderDev'
+            programArgs '--uuid', '00000000-0000-0000-0000-000000000001'
         }
         server {
             server()
