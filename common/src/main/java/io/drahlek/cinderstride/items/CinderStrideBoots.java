@@ -10,23 +10,14 @@ import io.drahlek.dirigo.event.PlayerMovedEvent;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorMaterials;
-import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,38 +28,22 @@ import java.util.List;
 import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 
 @Item(id = "cinder_stride_boots", creativeTab = "combat")
-public class CinderStrideBoots extends net.minecraft.world.item.Item  {
+public class CinderStrideBoots extends ArmorItem {
     static public final String NAME = "cinder_stride_boots";
-    private static final TagKey<net.minecraft.world.item.Item> REPAIR_MATERIALS = TagKey.create(
-            Registries.ITEM,
-            Identifier.fromNamespaceAndPath(Constants.MOD_ID, "cinder_stride_boots_repair_materials")
-    );
 
     public CinderStrideBoots(Properties properties) {
-        super(MATERIAL, Type.BOOTS, properties
+        super(ArmorMaterials.NETHERITE, Type.BOOTS, properties
                 .stacksTo(1)
                 .fireResistant()
-                .humanoidArmor( new ArmorMaterial(
-                        ArmorMaterials.NETHERITE.durability(),
-                        ArmorMaterials.NETHERITE.defense(),
-                        ArmorMaterials.NETHERITE.enchantmentValue(),
-                        ArmorMaterials.NETHERITE.equipSound(),
-                        ArmorMaterials.NETHERITE.toughness(),
-                        ArmorMaterials.NETHERITE.knockbackResistance(),
-                        ArmorMaterials.NETHERITE.repairIngredient(),
-                        ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(Constants.MOD_ID, NAME))
-                ), ArmorType.BOOTS)
-                .repairable(REPAIR_MATERIALS)
-                .durability(ArmorType.BOOTS.getDurability(ArmorMaterials.NETHERITE.durability())));
+                .durability(Type.BOOTS.getDurability(37)));
     }
 
-    //TODO see https://wiki.fabricmc.net/tutorial:tooltip
     @Override
-    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay displayComponent, Consumer<Component> textConsumer, @NonNull TooltipFlag type) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag type) {
         String key = isUpgraded(stack)
                 ? "tooltip.cinderstride.cinderboots.upgraded"
                 : "tooltip.cinderstride.cinderboots.base";
-        textConsumer.accept(Component.translatable(key).withStyle(ChatFormatting.RED));
+        tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.RED));
     }
 
     @EventSubscriber(PlayerMovedEvent.class)

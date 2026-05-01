@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.MapColor;
+import org.joml.Vector3f;
 
 import static java.lang.Math.floorMod;
 
@@ -34,11 +35,11 @@ import static java.lang.Math.floorMod;
 public class HearthFireBlock extends CampfireBlock {
     public static final String NAME = "hearthfire";
     public static final MapCodec<HearthFireBlock> CODEC = simpleCodec(HearthFireBlock::new);
-    private static final int HEARTH_SMOKE_COLOR = 0xDD6B49;
-    private static final int HEARTH_SMOKE_HOT_COLOR = 0xFF9E66;
-    private static final int HEARTH_WHOOSH_COLOR = 0xFFD08A;
-    private static final int HEARTH_EMBER_START_COLOR = 0xFFB55E;
-    private static final int HEARTH_EMBER_END_COLOR = 0xB73C22;
+    private static final Vector3f HEARTH_SMOKE_COLOR = rgb(0xDD6B49);
+    private static final Vector3f HEARTH_SMOKE_HOT_COLOR = rgb(0xFF9E66);
+    private static final Vector3f HEARTH_WHOOSH_COLOR = rgb(0xFFD08A);
+    private static final Vector3f HEARTH_EMBER_START_COLOR = rgb(0xFFB55E);
+    private static final Vector3f HEARTH_EMBER_END_COLOR = rgb(0xB73C22);
 
     public HearthFireBlock(BlockBehaviour.Properties properties) {
         super(
@@ -116,6 +117,13 @@ public class HearthFireBlock extends CampfireBlock {
                 level.addParticle(ParticleTypes.SMALL_FLAME, x, y + 0.01D, z, xVelocity * 0.35D, yVelocity * 6.0D, zVelocity * 0.35D);
             }
         }
+    }
+
+    private static Vector3f rgb(int color) {
+        float red = ((color >> 16) & 0xFF) / 255.0F;
+        float green = ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        return new Vector3f(red, green, blue);
     }
 
     public static boolean isHearthfire(BlockState state) {

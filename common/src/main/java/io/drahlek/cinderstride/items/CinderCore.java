@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Block.UPDATE_ALL;
-import static net.minecraft.world.level.block.Block.UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS;
 
 @Item(id = "cinder_core", creativeTab = "ingredients")
 public class CinderCore extends net.minecraft.world.item.Item  {
@@ -62,7 +61,7 @@ public class CinderCore extends net.minecraft.world.item.Item  {
         }
 
         BlockState transformedState = HearthFireBlock.copyCampfireState(state, hearthfireBlock.defaultBlockState());
-        if (!level.setBlock(pos, transformedState, UPDATE_ALL | UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS)) {
+        if (!level.setBlock(pos, transformedState, UPDATE_ALL)) {
             return InteractionResult.FAIL;
         }
 
@@ -78,6 +77,6 @@ public class CinderCore extends net.minecraft.world.item.Item  {
         }
 
         level.playSound(null, pos, SoundEvents.BLAZE_SHOOT, SoundSource.BLOCKS, 0.8F, 0.8F + level.getRandom().nextFloat() * 0.15F);
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.SUCCESS;
     }
 }

@@ -11,4 +11,16 @@ public class CinderStrideConfigData {
     private long decayTicks = 40;    //each phase
     @ConfigSetting(value = "durabilityLossChance", min = 0f, max = 1f, defaultValue = "0.25f")
     private float durabilityLossChance = 0.25f; //percent chance each cooled block causes 1 point of durability
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public long getDecayTicks() {
+        return decayTicks;
+    }
+
+    public float getDurabilityLossChance() {
+        return durabilityLossChance;
+    }
 }
