@@ -4,7 +4,7 @@ import io.drahlek.cinderstride.Constants;
 import io.drahlek.cinderstride.blocks.HearthFireBlock;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.RenderType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -26,7 +26,7 @@ public final class CinderStrideClient {
         event.enqueueWork(() -> {
             ItemBlockRenderTypes.setRenderLayer(
                     BlockRegistrar.blocks.get(HearthFireBlock.NAME).get(),
-                    ChunkSectionLayer.CUTOUT
+                    RenderType.cutout()
             );
         });
     }
