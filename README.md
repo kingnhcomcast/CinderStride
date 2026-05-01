@@ -44,6 +44,7 @@ If you’ve used Frost Walker before, it’s that idea, just faster and a bit mo
 
 ![Player walking across lava](https://cdn.modrinth.com/data/rZcOAbbe/images/cbfddac29c72ce3b5ce6d360f77c91c4e6dd1287.gif)
 
+![Player Falling into a lava lake](https://cdn.modrinth.com/data/rZcOAbbe/images/7e33474090f1e7c8683e19fadfbd7ba00eb54151.gif)
 ---
 
 ## 🔥 HearthFire
@@ -87,6 +88,8 @@ You are meant to keep moving. That’s where the risk comes from.
 * Only found in Treasure Bastions
 * Not craftable
 
+![Locating boots in a Bastion Treature Room](https://cdn.modrinth.com/data/rZcOAbbe/images/24569d4b313d2107348cab6026ed5c2609a914d2_350.webp)
+
 ---
 
 ### Step 2 – Get materials
@@ -101,12 +104,15 @@ Found in Bastions:
     * Found in Treasure Bastions
     * Can be duplicated like Netherite templates
 
+* ![Template Duplication](https://cdn.modrinth.com/data/rZcOAbbe/images/445f3252d6c7e5562ce9d68e89582f525e748198.png)
+
 ---
 
 ### Step 3 – Make a core
 
 * 4 Cinder Shards → 1 Cinder Core
 
+![Upgrading Boots](https://cdn.modrinth.com/data/rZcOAbbe/images/59477f9bc631fd4c9c3b24bca8a2f98fde943796.png)
 ---
 
 ### Step 4 – Upgrade the boots
@@ -114,6 +120,8 @@ Found in Bastions:
 Use a Smithing Table:
 
 * Template + Boots + Core → Upgraded Boots
+
+![Upgrading Boots](https://cdn.modrinth.com/data/rZcOAbbe/images/193c8dad6c2ef788d3d74e1534f6c327e8e57fb8.png)
 
 ---
 
