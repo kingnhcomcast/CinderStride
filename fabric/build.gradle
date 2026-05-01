@@ -9,9 +9,7 @@ repositories {
     maven { url "https://maven.nucleoid.xyz/" }
 }
 
-def dirigoFabricDevJar = files(rootProject.file("../Dirigo/fabric/build/devlibs/dirigo-fabric-${minecraft_version}-${dirigo_min_version}-dev.jar")).builtBy(
-        gradle.includedBuild('Dirigo').task(':fabric:jar')
-)
+def dirigoFabricDevJar = files(rootProject.file("../Dirigo/fabric/build/devlibs/dirigo-fabric-${minecraft_version}-${dirigo_min_version}-dev.jar"))
 def dirigoReflectionsVersion = "0.10.2"
 
 configurations {
@@ -39,9 +37,11 @@ dependencies {
     runtimeOnly "org.javassist:javassist:3.28.0-GA"
     runtimeOnly "com.google.code.findbugs:jsr305:3.0.2"
 
-    // This points to Dirigo's common module
+    // Dirigo is supplied at runtime via the Fabric dev jar above. Keep the shared
+    // API on the compile classpath only so IDE task inspection does not eagerly
+    // resolve the included build through clientRuntimeClasspath.
     def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-    implementation("io.drahlek:common:${dirigo_min_version}") {
+    compileOnly("io.drahlek:common:${dirigo_min_version}") {
         attributes {
             attribute(loaderAttribute, 'common')
         }
@@ -128,4 +128,12 @@ tasks.named('processClientResources') {
 tasks.named('compileClientJava', JavaCompile) {
     dependsOn(configurations.commonClientJava)
     source(configurations.commonClientJava)
+}
+
+tasks.named('runClient') {
+    dependsOn(gradle.includedBuild('Dirigo').task(':fabric:jar'))
+}
+
+tasks.named('runServer') {
+    dependsOn(gradle.includedBuild('Dirigo').task(':fabric:jar'))
 }
