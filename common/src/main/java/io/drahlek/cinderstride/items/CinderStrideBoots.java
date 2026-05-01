@@ -10,7 +10,10 @@ import io.drahlek.dirigo.event.PlayerMovedEvent;
 import io.drahlek.dirigo.registrars.BlockRegistrar;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -30,6 +33,10 @@ import static net.minecraft.world.level.block.Block.UPDATE_ALL;
 @Item(id = "cinder_stride_boots", creativeTab = "combat")
 public class CinderStrideBoots extends ArmorItem {
     static public final String NAME = "cinder_stride_boots";
+    private static final TagKey<net.minecraft.world.item.Item> REPAIR_MATERIALS = TagKey.create(
+            Registries.ITEM,
+            ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "cinder_stride_boots_repair_materials")
+    );
 
     public CinderStrideBoots(Properties properties) {
         super(ArmorMaterials.NETHERITE, Type.BOOTS, properties
@@ -44,6 +51,11 @@ public class CinderStrideBoots extends ArmorItem {
                 ? "tooltip.cinderstride.cinderboots.upgraded"
                 : "tooltip.cinderstride.cinderboots.base";
         tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.RED));
+    }
+
+    @Override
+    public boolean isValidRepairItem(ItemStack stack, ItemStack repairCandidate) {
+        return repairCandidate.is(REPAIR_MATERIALS) || super.isValidRepairItem(stack, repairCandidate);
     }
 
     @EventSubscriber(PlayerMovedEvent.class)

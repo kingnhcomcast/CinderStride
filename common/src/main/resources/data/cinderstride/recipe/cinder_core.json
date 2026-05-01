@@ -5,7 +5,9 @@
     "##"
   ],
   "key": {
-    "#": "cinderstride:cinder_shard"
+    "#": {
+      "item": "cinderstride:cinder_shard"
+    }
   },
   "result": {
     "id": "cinderstride:cinder_core"

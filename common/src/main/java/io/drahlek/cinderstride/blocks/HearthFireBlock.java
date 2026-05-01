@@ -11,12 +11,11 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CampfireCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -165,13 +164,7 @@ public class HearthFireBlock extends CampfireBlock {
         }
     }
 
-    public static void cookTick(
-            ServerLevel level,
-            BlockPos pos,
-            BlockState state,
-            CampfireBlockEntity blockEntity,
-            RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> cachedCheck
-    ) {
+    public static void cookTick(Level level, BlockPos pos, BlockState state, CampfireBlockEntity blockEntity) {
         boolean hasCookingItem = false;
         NonNullList<ItemStack> items = blockEntity.getItems();
         int[] progress = ((CampfireBlockEntityAccessor) blockEntity).cinderstride$getCookingProgress();
@@ -190,7 +183,7 @@ public class HearthFireBlock extends CampfireBlock {
             }
 
             SingleRecipeInput input = new SingleRecipeInput(stack);
-            ItemStack result = cachedCheck.getRecipeFor(input, level)
+            ItemStack result = level.getRecipeManager().getRecipeFor(RecipeType.CAMPFIRE_COOKING, input, level)
                     .map(holder -> holder.value().assemble(input, level.registryAccess()))
                     .orElse(stack);
             if (!result.isItemEnabled(level.enabledFeatures())) {

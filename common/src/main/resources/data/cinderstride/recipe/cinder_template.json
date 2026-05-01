@@ -6,9 +6,15 @@
     "MMM"
   ],
   "key": {
-    "M": "minecraft:magma_cream",
-    "T": "cinderstride:cinder_template",
-    "G": "minecraft:gilded_blackstone"
+    "M": {
+      "item": "minecraft:magma_cream"
+    },
+    "T": {
+      "item": "cinderstride:cinder_template"
+    },
+    "G": {
+      "item": "minecraft:gilded_blackstone"
+    }
   },
   "result": {
     "id": "cinderstride:cinder_template",

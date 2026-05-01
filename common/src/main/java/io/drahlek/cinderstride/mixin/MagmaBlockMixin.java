@@ -18,18 +18,18 @@ public class MagmaBlockMixin {
             method = "stepOn",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)V"
+                    target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
             )
     )
-    private void cinderstride$skipMagmaDamage(Entity entity, DamageSource source, float amount) {
+    private boolean cinderstride$skipMagmaDamage(Entity entity, DamageSource source, float amount) {
         if (entity instanceof LivingEntity living) {
             ItemStack boots = living.getItemBySlot(EquipmentSlot.FEET);
 
             if (boots.getItem() instanceof CinderStrideBoots) {
-                return; // prevent magma damage
+                return false; // prevent magma damage
             }
         }
 
-        entity.hurt(source, amount); // vanilla behavior
+        return entity.hurt(source, amount); // vanilla behavior
     }
 }

@@ -1,8 +1,14 @@
 {
   "type": "minecraft:smithing_transform",
-  "template": "cinderstride:cinder_template",
-  "base": "cinderstride:cinder_stride_boots",
-  "addition": "cinderstride:cinder_core",
+  "template": {
+    "item": "cinderstride:cinder_template"
+  },
+  "base": {
+    "item": "cinderstride:cinder_stride_boots"
+  },
+  "addition": {
+    "item": "cinderstride:cinder_core"
+  },
   "result": {
     "id": "cinderstride:cinder_stride_boots",
     "count": 1,

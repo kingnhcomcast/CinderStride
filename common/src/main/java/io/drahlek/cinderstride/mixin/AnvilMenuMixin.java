@@ -41,18 +41,18 @@ public abstract class AnvilMenuMixin {
     }
 
     @ModifyConstant(
-            method = {"createResultInternal", "createResult"},
+            method = "createResult",
             constant = @Constant(intValue = 4, ordinal = 0),
-            require = 0
+            require = 1
     )
     private int cinderstride$boostFirstShardRepairStep(int vanillaDivisor) {
         return cinderstride$usingCinderShardRepair() ? 2 : vanillaDivisor;
     }
 
     @ModifyConstant(
-            method = {"createResultInternal", "createResult"},
+            method = "createResult",
             constant = @Constant(intValue = 4, ordinal = 1),
-            require = 0
+            require = 1
     )
     private int cinderstride$boostRepeatedShardRepairStep(int vanillaDivisor) {
         return cinderstride$usingCinderShardRepair() ? 2 : vanillaDivisor;

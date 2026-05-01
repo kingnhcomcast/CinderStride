@@ -2,10 +2,6 @@ package io.drahlek.cinderstride.mixin;
 
 import io.drahlek.cinderstride.blocks.HearthFireBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.crafting.CampfireCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,18 +14,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class CampfireBlockEntityMixin {
     @Inject(method = "cookTick", at = @At("HEAD"), cancellable = true)
     private static void cinderstride$accelerateHearthfireCooking(
-            ServerLevel level,
+            Level level,
             BlockPos pos,
             BlockState state,
             CampfireBlockEntity blockEntity,
-            RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> cachedCheck,
             CallbackInfo ci
     ) {
         if (!HearthFireBlock.isHearthfire(state)) {
             return;
         }
 
-        HearthFireBlock.cookTick(level, pos, state, blockEntity, cachedCheck);
+        HearthFireBlock.cookTick(level, pos, state, blockEntity);
         ci.cancel();
     }
 
